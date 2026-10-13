@@ -13,15 +13,15 @@
                 android:endX="108"
                 android:endY="108"
                 android:type="linear">
-                <item android:offset="0.0" android:color="#0F172A" />
+                <item android:offset="0.0" android:color="#0A192F" />
                 <item android:offset="1.0" android:color="#1E293B" />
             </gradient>
         </aapt:attr>
     </path>
-    <!-- Subtle accent glow -->
+    <!-- Subtle luminous accent ring -->
     <path
-        android:pathData="M54,14 A40,40 0 1 0 54,94 A40,40 0 1 0 54,14 Z"
-        android:strokeWidth="1.5"
+        android:pathData="M54,18 A36,36 0 1 0 54,90 A36,36 0 1 0 54,18 Z"
+        android:strokeWidth="1.2"
         android:strokeColor="#1E3A5F"
         android:fillColor="#00000000" />
 </vector>

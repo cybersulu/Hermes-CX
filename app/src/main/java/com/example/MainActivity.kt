@@ -16,19 +16,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Calculate
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.CurrencyExchange
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material.icons.filled.Tune
-import androidx.compose.material.icons.outlined.Calculate
-import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material.icons.outlined.CurrencyExchange
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,7 +46,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.MainViewModel
 import com.example.ui.screens.CalculatorScreen
 import com.example.ui.screens.MarketRatesScreen
-import com.example.ui.screens.SavedPairsScreen
 import com.example.ui.screens.SettingsScreen
 import com.example.ui.screens.UnitsScreen
 import com.example.ui.theme.MyApplicationTheme
@@ -58,27 +58,21 @@ enum class Screen(
 ) {
     CALCULATOR(
         title = "Currency",
-        selectedIcon = Icons.Filled.Calculate,
-        unselectedIcon = Icons.Outlined.Calculate,
+        selectedIcon = Icons.Filled.CurrencyExchange,
+        unselectedIcon = Icons.Outlined.CurrencyExchange,
         testTag = "nav_calculator"
-    ),
-    UNITS(
-        title = "Units",
-        selectedIcon = Icons.Filled.Straighten,
-        unselectedIcon = Icons.Outlined.Straighten,
-        testTag = "nav_units"
-    ),
-    PREFERRED(
-        title = "Favorites",
-        selectedIcon = Icons.Filled.Star,
-        unselectedIcon = Icons.Outlined.StarOutline,
-        testTag = "nav_preferred"
     ),
     RATES(
         title = "Market",
         selectedIcon = Icons.Filled.TrendingUp,
         unselectedIcon = Icons.Outlined.TrendingUp,
         testTag = "nav_rates"
+    ),
+    UNITS(
+        title = "Units",
+        selectedIcon = Icons.Filled.Straighten,
+        unselectedIcon = Icons.Outlined.Straighten,
+        testTag = "nav_units"
     ),
     SETTINGS(
         title = "Settings",
@@ -120,7 +114,42 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     contentWindowInsets = WindowInsets.safeDrawing,
                     bottomBar = {
+                        val isDark = when (uiState.themeMode) {
+                            1 -> false
+                            2 -> true
+                            else -> isSystemInDarkTheme()
+                        }
+                        val navBarContainerColor = if (isDark) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.primary
+                        }
+                        val navBarContentColor = if (isDark) {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.onPrimary
+                        }
+                        val itemColors = if (isDark) {
+                            NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                                selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                indicatorColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f),
+                                unselectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f)
+                            )
+                        } else {
+                            NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                                indicatorColor = MaterialTheme.colorScheme.surface,
+                                unselectedIconColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.72f),
+                                unselectedTextColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.72f)
+                            )
+                        }
+
                         NavigationBar(
+                            containerColor = navBarContainerColor,
+                            contentColor = navBarContentColor,
                             modifier = Modifier.testTag("bottom_nav_bar")
                         ) {
                             Screen.entries.forEachIndexed { index, screen ->
@@ -140,6 +169,7 @@ class MainActivity : ComponentActivity() {
                                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                                         )
                                     },
+                                    colors = itemColors,
                                     modifier = Modifier.testTag(screen.testTag)
                                 )
                             }
@@ -169,6 +199,17 @@ class MainActivity : ComponentActivity() {
                                     onTargetAmountClick = viewModel::selectTargetInput
                                 )
                             }
+                            Screen.RATES -> {
+                                MarketRatesScreen(
+                                    state = uiState,
+                                    onSelectBase = viewModel::setBaseCurrency,
+                                    onSelectTargetAndOpen = { targetCode ->
+                                        viewModel.setTargetCurrency(targetCode)
+                                        currentScreenIndex = 0 // Switch to calculator
+                                    },
+                                    onSyncRates = { viewModel.syncRates(force = true) }
+                                )
+                            }
                             Screen.UNITS -> {
                                 UnitsScreen(
                                     state = unitsState,
@@ -179,29 +220,6 @@ class MainActivity : ComponentActivity() {
                                     onKeypadPress = viewModel::appendUnitKeypad,
                                     onFromAmountClick = viewModel::selectUnitFromInput,
                                     onToAmountClick = viewModel::selectUnitToInput
-                                )
-                            }
-                            Screen.PREFERRED -> {
-                                SavedPairsScreen(
-                                    state = uiState,
-                                    onSelectPair = { base, target ->
-                                        viewModel.selectPair(base, target)
-                                        currentScreenIndex = 0 // Switch to calculator
-                                    },
-                                    onDeletePair = viewModel::deleteSavedPair,
-                                    onTogglePin = viewModel::togglePinSavedPair,
-                                    onAddNewPair = viewModel::addCustomPair
-                                )
-                            }
-                            Screen.RATES -> {
-                                MarketRatesScreen(
-                                    state = uiState,
-                                    onSelectBase = viewModel::setBaseCurrency,
-                                    onSelectTargetAndOpen = { targetCode ->
-                                        viewModel.setTargetCurrency(targetCode)
-                                        currentScreenIndex = 0 // Switch to calculator
-                                    },
-                                    onSyncRates = { viewModel.syncRates(force = true) }
                                 )
                             }
                             Screen.SETTINGS -> {
