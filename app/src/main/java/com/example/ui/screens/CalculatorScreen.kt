@@ -99,57 +99,59 @@ fun CalculatorScreen(
                 .fillMaxSize()
                 .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 12.dp)
         ) {
-            Column(
+            // Hero Rate Card - Non-scrolling
+            RateDisplayCard(
+                state = state,
+                onBaseClick = {
+                    isSelectingBase = true
+                    coroutineScope.launch { sheetState.show() }
+                },
+                onTargetClick = {
+                    isSelectingTarget = true
+                    coroutineScope.launch { sheetState.show() }
+                },
+                onSwap = onSwap,
+                onToggleSave = onToggleSavePair,
+                onBaseAmountClick = onBaseAmountClick,
+                onTargetAmountClick = onTargetAmountClick,
+                onSyncRates = onSyncRates
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Sub Tab Row: Keypad vs Compare - Non-scrolling
+            PrimaryTabRow(
+                selectedTabIndex = calculatorSubTab,
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(14.dp))
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.7f), RoundedCornerShape(14.dp))
             ) {
-                // Hero Rate Card
-                RateDisplayCard(
-                    state = state,
-                    onBaseClick = {
-                        isSelectingBase = true
-                        coroutineScope.launch { sheetState.show() }
-                    },
-                    onTargetClick = {
-                        isSelectingTarget = true
-                        coroutineScope.launch { sheetState.show() }
-                    },
-                    onSwap = onSwap,
-                    onToggleSave = onToggleSavePair,
-                    onBaseAmountClick = onBaseAmountClick,
-                    onTargetAmountClick = onTargetAmountClick,
-                    onSyncRates = onSyncRates
+                Tab(
+                    selected = calculatorSubTab == 0,
+                    onClick = { calculatorSubTab = 0 },
+                    text = { Text("Keypad", fontWeight = FontWeight.SemiBold) },
+                    modifier = Modifier.testTag("tab_keypad")
                 )
+                Tab(
+                    selected = calculatorSubTab == 1,
+                    onClick = { calculatorSubTab = 1 },
+                    text = { Text("Compare", fontWeight = FontWeight.SemiBold) },
+                    modifier = Modifier.testTag("tab_compare")
+                )
+            }
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Sub Tab Row: Keypad vs Multi-Compare
-                PrimaryTabRow(
-                    selectedTabIndex = calculatorSubTab,
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.primary,
+            // Only the Compare sub-tab is scrollable
+            if (calculatorSubTab == 1) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(14.dp))
-                        .border(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.7f), RoundedCornerShape(14.dp))
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
                 ) {
-                    Tab(
-                        selected = calculatorSubTab == 0,
-                        onClick = { calculatorSubTab = 0 },
-                        text = { Text("Keypad", fontWeight = FontWeight.SemiBold) },
-                        modifier = Modifier.testTag("tab_keypad")
-                    )
-                    Tab(
-                        selected = calculatorSubTab == 1,
-                        onClick = { calculatorSubTab = 1 },
-                        text = { Text("Compare", fontWeight = FontWeight.SemiBold) },
-                        modifier = Modifier.testTag("tab_compare")
-                    )
-                }
-
-                if (calculatorSubTab == 1) {
-                    Spacer(modifier = Modifier.height(8.dp))
                     MultiCompareSection(
                         state = state,
                         onSelectTarget = { code ->
@@ -158,11 +160,9 @@ fun CalculatorScreen(
                         }
                     )
                 }
-            }
-
-            // Keypad anchored consistently at the bottom
-            if (calculatorSubTab == 0) {
-                Spacer(modifier = Modifier.height(8.dp))
+            } else {
+                // Keypad sub-tab: anchored to bottom without scrolling
+                Spacer(modifier = Modifier.weight(1f))
                 KeypadView(
                     onKeyPress = onKeypadPress,
                     modifier = Modifier.fillMaxWidth()

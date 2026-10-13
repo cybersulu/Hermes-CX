@@ -135,12 +135,7 @@ fun UnitsScreen(
             .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 12.dp)
             .testTag("units_screen")
     ) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-        ) {
-            // HERO UNIT CONVERSION CARD
+        // HERO UNIT CONVERSION CARD - Non-scrolling
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -524,10 +519,12 @@ fun UnitsScreen(
 
         if (unitsSubTab == 1) {
             Spacer(modifier = Modifier.height(10.dp))
-            // ALL UNITS LIST
+            // ALL UNITS LIST - only this sub-tab is scrollable
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
                     .testTag("all_units_comparison_list"),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -598,12 +595,11 @@ fun UnitsScreen(
                         }
                     }
                 }
-            }
         }
 
         // Keypad area anchored consistently at the bottom
         if (unitsSubTab == 0) {
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.weight(1f))
             // Unit category selector strip just above the number keypad
             UnitCategorySelectorStrip(
                 selectedCategory = state.selectedCategory,
