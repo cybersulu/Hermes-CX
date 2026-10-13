@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Solid dark navy canvas matching Hermes CX branding -->
+    <item>
+        <color android:color="@color/hermes_splash_bg" />
+    </item>
+
+    <!-- Centered Hermes CX logo symbol -->
+    <item
+        android:width="160dp"
+        android:height="160dp"
+        android:gravity="center"
+        android:drawable="@drawable/img_hermes_logo" />
+</layer-list>

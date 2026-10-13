@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.MyApplication" parent="android:Theme.DeviceDefault.NoActionBar">
+        <!-- Default app theme without action bar -->
+    </style>
 
-    <style name="Theme.MyApplication" parent="android:Theme.DeviceDefault.NoActionBar" />
+    <!-- Theme applied while the app cold-boots to render the Hermes CX splashscreen -->
+    <style name="Theme.MyApplication.Splash" parent="android:Theme.DeviceDefault.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:statusBarColor">@color/hermes_splash_bg</item>
+        <item name="android:navigationBarColor">@color/hermes_splash_bg</item>
+    </style>
 </resources>
