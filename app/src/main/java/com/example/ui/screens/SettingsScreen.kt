@@ -138,7 +138,7 @@ fun SettingsScreen(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Currency & Unit Exchange",
+                        text = "Currency & Unit Converter",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.SemiBold
