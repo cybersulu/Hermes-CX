@@ -1,7 +1,8 @@
 package com.example.ui.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun KeypadView(
     onKeyPress: (String) -> Unit,
@@ -53,7 +55,10 @@ fun KeypadView(
                     KeypadButton(
                         label = key,
                         modifier = Modifier.weight(1f),
-                        onClick = { onKeyPress(key) }
+                        onClick = { onKeyPress(key) },
+                        onLongClick = if (key == "DEL") {
+                            { onKeyPress("C") }
+                        } else null
                     )
                 }
             }
@@ -61,11 +66,13 @@ fun KeypadView(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun KeypadButton(
     label: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onLongClick: (() -> Unit)? = null
 ) {
     val isAction = label == "." || label == "DEL"
     val testTagStr = if (label == "DEL") "keypad_del" else "keypad_$label"
@@ -74,7 +81,10 @@ private fun KeypadButton(
         modifier = modifier
             .height(68.dp)
             .clip(RoundedCornerShape(18.dp))
-            .clickable(onClick = onClick)
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
             .testTag(testTagStr),
         shape = RoundedCornerShape(18.dp),
         color = if (isAction) {
