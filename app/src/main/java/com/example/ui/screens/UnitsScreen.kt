@@ -140,45 +140,7 @@ fun UnitsScreen(
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
-            // CATEGORY CHIPS ROW
-            Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-                .padding(vertical = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            UnitCatalog.allCategories.forEach { category ->
-                val isSelected = category == state.selectedCategory
-                FilterChip(
-                    selected = isSelected,
-                    onClick = { onCategoryChange(category) },
-                    label = {
-                        Text(
-                            text = category.displayName,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = getCategoryIcon(category),
-                            contentDescription = category.displayName,
-                            modifier = Modifier.size(18.dp)
-                        )
-                    },
-                    shape = RoundedCornerShape(14.dp),
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    ),
-                    modifier = Modifier.testTag("chip_category_${category.id}")
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        // HERO UNIT CONVERSION CARD
+            // HERO UNIT CONVERSION CARD
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -562,6 +524,11 @@ fun UnitsScreen(
 
             if (unitsSubTab == 1) {
                 Spacer(modifier = Modifier.height(8.dp))
+                UnitCategorySelectorStrip(
+                    selectedCategory = state.selectedCategory,
+                    onCategoryChange = onCategoryChange
+                )
+                Spacer(modifier = Modifier.height(8.dp))
                 // ALL UNITS LIST
                 Column(
                     modifier = Modifier
@@ -639,9 +606,15 @@ fun UnitsScreen(
             }
         }
 
-        // Keypad anchored consistently at the bottom
+        // Keypad area anchored consistently at the bottom
         if (unitsSubTab == 0) {
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
+            // Unit category selector strip just above the number keypad
+            UnitCategorySelectorStrip(
+                selectedCategory = state.selectedCategory,
+                onCategoryChange = onCategoryChange
+            )
+            Spacer(modifier = Modifier.height(6.dp))
             KeypadView(
                 onKeyPress = onKeypadPress,
                 modifier = Modifier.fillMaxWidth()
@@ -685,6 +658,49 @@ fun UnitsScreen(
                 coroutineScope.launch { sheetState.hide() }
             }
         )
+    }
+}
+
+@Composable
+private fun UnitCategorySelectorStrip(
+    selectedCategory: UnitCategory,
+    onCategoryChange: (UnitCategory) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
+            .padding(vertical = 2.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        UnitCatalog.allCategories.forEach { category ->
+            val isSelected = category == selectedCategory
+            FilterChip(
+                selected = isSelected,
+                onClick = { onCategoryChange(category) },
+                label = {
+                    Text(
+                        text = category.displayName,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = getCategoryIcon(category),
+                        contentDescription = category.displayName,
+                        modifier = Modifier.size(18.dp)
+                    )
+                },
+                shape = RoundedCornerShape(14.dp),
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                    selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
+                modifier = Modifier.testTag("chip_category_${category.id}")
+            )
+        }
     }
 }
 
