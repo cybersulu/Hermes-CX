@@ -20,6 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,6 +63,7 @@ fun MarketRatesScreen(
     state: CurrencyUiState,
     onSelectBase: (String) -> Unit,
     onSelectTargetAndOpen: (String) -> Unit,
+    onTogglePin: (String) -> Unit = {},
     onSyncRates: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -73,7 +76,7 @@ fun MarketRatesScreen(
 
     val regions = listOf("All", "Popular", "Europe", "Americas", "Asia", "Middle East", "Africa", "Oceania")
 
-    val filteredList = remember(searchQuery, selectedRegion, state.baseCurrency) {
+    val filteredList = remember(searchQuery, selectedRegion, state.baseCurrency, state.pinnedCurrencies) {
         val baseList = if (selectedRegion == "Popular") {
             CurrencyCatalog.popularCurrencies.map { CurrencyCatalog.getCurrency(it) }
         } else if (selectedRegion != "All") {
@@ -82,7 +85,7 @@ fun MarketRatesScreen(
             CurrencyCatalog.allCurrencies
         }
 
-        if (searchQuery.isBlank()) {
+        val searched = if (searchQuery.isBlank()) {
             baseList
         } else {
             val q = searchQuery.trim().lowercase()
@@ -92,6 +95,11 @@ fun MarketRatesScreen(
                 it.symbol.lowercase().contains(q)
             }
         }
+
+        // Pinned currencies at the top arranged alphabetically, followed by unpinned currencies
+        val pinned = searched.filter { state.pinnedCurrencies.contains(it.code) }.sortedBy { it.code }
+        val unpinned = searched.filter { !state.pinnedCurrencies.contains(it.code) }
+        pinned + unpinned
     }
 
     val baseCurrency = CurrencyCatalog.getCurrency(state.baseCurrency)
@@ -266,19 +274,38 @@ fun MarketRatesScreen(
                             }
                         }
 
-                        Column(horizontalAlignment = Alignment.End) {
-                            Text(
-                                text = rateFormatter.format(rate),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary,
-                                textAlign = TextAlign.End
-                            )
-                            Text(
-                                text = "1 ${state.baseCurrency}",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.outline
-                            )
+                        val isPinned = state.pinnedCurrencies.contains(currency.code)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Column(horizontalAlignment = Alignment.End) {
+                                Text(
+                                    text = rateFormatter.format(rate),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    textAlign = TextAlign.End
+                                )
+                                Text(
+                                    text = "1 ${state.baseCurrency}",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.outline
+                                )
+                            }
+
+                            IconButton(
+                                onClick = { onTogglePin(currency.code) },
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .testTag("pin_currency_${currency.code}")
+                            ) {
+                                Icon(
+                                    imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
+                                    contentDescription = if (isPinned) "Unpin currency" else "Pin currency",
+                                    tint = if (isPinned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline.copy(alpha = 0.6f)
+                                )
+                            }
                         }
                     }
                 }
@@ -292,6 +319,7 @@ fun MarketRatesScreen(
             sheetState = sheetState,
             title = "Select Base Currency for Market Rates",
             selectedCode = state.baseCurrency,
+            pinnedCurrencies = state.pinnedCurrencies,
             onDismiss = {
                 isChangingBase = false
                 coroutineScope.launch { sheetState.hide() }

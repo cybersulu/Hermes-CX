@@ -294,4 +294,56 @@ class ExampleUnitTest {
             assertTrue(defaults.first.id != defaults.second.id)
         }
     }
+
+    @Test
+    fun testCurrencyCompareAlwaysCalculatesFromEnteredCurrency() {
+        val testRates = mapOf("USD" to 1.0, "EUR" to 0.80, "GBP" to 0.60, "JPY" to 120.0)
+
+        // Case 1: User entered 100 in BASE currency (USD)
+        val stateBase = CurrencyUiState(
+            baseCurrency = "USD",
+            targetCurrency = "EUR",
+            inputAmount = "100",
+            activeInputSource = ActiveInputSource.BASE,
+            ratesMap = testRates
+        )
+        assertEquals("USD", stateBase.enteredCurrency)
+        assertEquals(100.0, stateBase.numericInput, 0.001)
+
+        // Converted to GBP: 100 * (0.60 / 1.0) = 60 GBP
+        val rateToGbp = stateBase.calculateRate(stateBase.enteredCurrency, "GBP")
+        assertEquals(0.60, rateToGbp, 0.001)
+        assertEquals(60.0, stateBase.numericInput * rateToGbp, 0.001)
+
+        // Converted to JPY: 100 * (120.0 / 1.0) = 12,000 JPY
+        val rateToJpy = stateBase.calculateRate(stateBase.enteredCurrency, "JPY")
+        assertEquals(120.0, rateToJpy, 0.001)
+        assertEquals(12000.0, stateBase.numericInput * rateToJpy, 0.001)
+
+        // Case 2: User entered 80 in TARGET currency (EUR)
+        val stateTarget = CurrencyUiState(
+            baseCurrency = "USD",
+            targetCurrency = "EUR",
+            inputAmount = "80",
+            activeInputSource = ActiveInputSource.TARGET,
+            ratesMap = testRates
+        )
+        assertEquals("EUR", stateTarget.enteredCurrency)
+        assertEquals(80.0, stateTarget.numericInput, 0.001)
+
+        // Compare from entered EUR to USD: 80 * (1.0 / 0.80) = 100 USD
+        val rateEurToUsd = stateTarget.calculateRate(stateTarget.enteredCurrency, "USD")
+        assertEquals(1.25, rateEurToUsd, 0.001)
+        assertEquals(100.0, stateTarget.numericInput * rateEurToUsd, 0.001)
+
+        // Compare from entered EUR to GBP: 80 * (0.60 / 0.80) = 60 GBP
+        val rateEurToGbp = stateTarget.calculateRate(stateTarget.enteredCurrency, "GBP")
+        assertEquals(0.75, rateEurToGbp, 0.001)
+        assertEquals(60.0, stateTarget.numericInput * rateEurToGbp, 0.001)
+
+        // Compare from entered EUR to JPY: 80 * (120.0 / 0.80) = 12,000 JPY
+        val rateEurToJpy = stateTarget.calculateRate(stateTarget.enteredCurrency, "JPY")
+        assertEquals(150.0, rateEurToJpy, 0.001)
+        assertEquals(12000.0, stateTarget.numericInput * rateEurToJpy, 0.001)
+    }
 }

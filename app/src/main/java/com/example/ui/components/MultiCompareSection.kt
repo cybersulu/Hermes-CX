@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.CurrencyCatalog
+import com.example.ui.ActiveInputSource
 import com.example.ui.CurrencyUiState
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -36,24 +37,49 @@ fun MultiCompareSection(
     onSelectTarget: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Collect unique comparison currencies from saved pairs + top popular currencies (excluding current base and target)
-    val comparisonCodes = (
-        state.savedPairs.map { it.targetCurrency } +
-        listOf("EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "INR")
-    ).distinct().filter { it != state.baseCurrency && it != state.targetCurrency }.take(6)
+    val enteredCurrencyCode = state.enteredCurrency
+    val otherSelectedCurrency = if (state.activeInputSource == ActiveInputSource.BASE) {
+        state.targetCurrency
+    } else {
+        state.baseCurrency
+    }
 
-    if (comparisonCodes.isEmpty()) return
+    // Only show pinned currencies on the Currency Compare sub-tab (excluding entered and other selected currency)
+    val comparisonCodes = state.pinnedCurrencies
+        .filter { it != enteredCurrencyCode && it != otherSelectedCurrency }
+        .sorted()
 
     val formatter = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
+    val enteredAmount = state.numericInput
+    val enteredAmountStr = state.inputAmount.ifEmpty { "0" }
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = "Compare (${state.inputAmount.ifEmpty { "0" }} ${state.baseCurrency})",
+            text = "Compare ($enteredAmountStr $enteredCurrencyCode)",
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(horizontal = 4.dp, vertical = 6.dp)
         )
+
+        if (comparisonCodes.isEmpty()) {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            ) {
+                Text(
+                    text = "No pinned currencies to compare.\nPin currencies in the Market tab to see them here.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(24.dp)
+                )
+            }
+            return
+        }
 
         Column(
             verticalArrangement = Arrangement.spacedBy(6.dp),
@@ -61,12 +87,8 @@ fun MultiCompareSection(
         ) {
             for (code in comparisonCodes) {
                 val currency = CurrencyCatalog.getCurrency(code)
-                val rate = if (state.baseCurrency == code) 1.0 else {
-                    val fromToUsd = if (state.baseCurrency == "USD") 1.0 else state.ratesMap[state.baseCurrency] ?: 1.0
-                    val toToUsd = if (code == "USD") 1.0 else state.ratesMap[code] ?: 1.0
-                    if (fromToUsd != 0.0) toToUsd / fromToUsd else 1.0
-                }
-                val converted = state.numericBaseAmount * rate
+                val rate = state.calculateRate(enteredCurrencyCode, code)
+                val converted = enteredAmount * rate
 
                 Surface(
                     shape = RoundedCornerShape(16.dp),
@@ -114,7 +136,7 @@ fun MultiCompareSection(
                                 textAlign = TextAlign.End
                             )
                             Text(
-                                text = "1 ${state.baseCurrency} = ${String.format(Locale.US, "%.4f", rate)}",
+                                text = "1 $enteredCurrencyCode = ${String.format(Locale.US, "%.4f", rate)}",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.outline
                             )

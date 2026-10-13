@@ -47,20 +47,26 @@ data class CurrencyUiState(
     val feePercent: Double = 1.5,
     val searchQuery: String = "",
     val selectedRegion: String = "All",
-    val isAmountHighlighted: Boolean = false
+    val isAmountHighlighted: Boolean = false,
+    val pinnedCurrencies: Set<String> = emptySet()
 ) {
-    val currentRate: Double
-        get() {
-            if (baseCurrency.equals(targetCurrency, ignoreCase = true)) return 1.0
-            val fromToUsd = if (baseCurrency == "USD") 1.0 else ratesMap[baseCurrency]
-            val toToUsd = if (targetCurrency == "USD") 1.0 else ratesMap[targetCurrency]
-            if (fromToUsd == null || toToUsd == null || fromToUsd == 0.0) {
-                val fallbackFrom = CurrencyCatalog.defaultUsdRates[baseCurrency] ?: 1.0
-                val fallbackTo = CurrencyCatalog.defaultUsdRates[targetCurrency] ?: 1.0
-                return if (fallbackFrom != 0.0) fallbackTo / fallbackFrom else 1.0
-            }
-            return toToUsd / fromToUsd
+    val enteredCurrency: String
+        get() = if (activeInputSource == ActiveInputSource.BASE) baseCurrency else targetCurrency
+
+    fun calculateRate(fromCurrency: String, toCurrency: String): Double {
+        if (fromCurrency.equals(toCurrency, ignoreCase = true)) return 1.0
+        val fromToUsd = if (fromCurrency == "USD") 1.0 else ratesMap[fromCurrency]
+        val toToUsd = if (toCurrency == "USD") 1.0 else ratesMap[toCurrency]
+        if (fromToUsd == null || toToUsd == null || fromToUsd == 0.0) {
+            val fallbackFrom = CurrencyCatalog.defaultUsdRates[fromCurrency] ?: 1.0
+            val fallbackTo = CurrencyCatalog.defaultUsdRates[toCurrency] ?: 1.0
+            return if (fallbackFrom != 0.0) fallbackTo / fallbackFrom else 1.0
         }
+        return toToUsd / fromToUsd
+    }
+
+    val currentRate: Double
+        get() = calculateRate(baseCurrency, targetCurrency)
 
     val numericInput: Double
         get() = inputAmount.toDoubleOrNull() ?: 0.0
@@ -113,7 +119,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             cadenceMinutes = preferences.getCadenceMinutes(),
             decimalPlaces = preferences.getDecimalPlaces(),
             feeEnabled = preferences.isFeeEnabled(),
-            feePercent = preferences.getFeePercent()
+            feePercent = preferences.getFeePercent(),
+            pinnedCurrencies = preferences.getPinnedCurrencies()
         )
     )
     val uiState: StateFlow<CurrencyUiState> = _uiState.asStateFlow()
@@ -155,6 +162,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _uiState.value = _uiState.value.copy(history = history)
             }
         }
+
+        // Collect pinned currencies
+        viewModelScope.launch {
+            preferences.pinnedCurrenciesFlow.collect { pinned ->
+                _uiState.value = _uiState.value.copy(pinnedCurrencies = pinned)
+            }
+        }
+    }
+
+    fun togglePinCurrency(code: String) {
+        preferences.togglePinCurrency(code)
     }
 
     fun syncRates(force: Boolean = true) {

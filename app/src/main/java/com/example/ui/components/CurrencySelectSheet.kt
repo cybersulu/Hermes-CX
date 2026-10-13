@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -51,6 +52,7 @@ fun CurrencySelectSheet(
     sheetState: SheetState,
     title: String,
     selectedCode: String,
+    pinnedCurrencies: Set<String> = emptySet(),
     onDismiss: () -> Unit,
     onCurrencySelected: (String) -> Unit
 ) {
@@ -59,7 +61,7 @@ fun CurrencySelectSheet(
 
     val regions = listOf("All", "Popular", "Europe", "Americas", "Asia", "Middle East", "Africa", "Oceania")
 
-    val filteredCurrencies = remember(searchQuery, selectedRegion) {
+    val filteredCurrencies = remember(searchQuery, selectedRegion, pinnedCurrencies) {
         val baseList = if (selectedRegion == "Popular") {
             CurrencyCatalog.popularCurrencies.map { CurrencyCatalog.getCurrency(it) }
         } else if (selectedRegion != "All") {
@@ -68,7 +70,7 @@ fun CurrencySelectSheet(
             CurrencyCatalog.allCurrencies
         }
 
-        if (searchQuery.isBlank()) {
+        val searched = if (searchQuery.isBlank()) {
             baseList
         } else {
             val q = searchQuery.trim().lowercase()
@@ -78,6 +80,11 @@ fun CurrencySelectSheet(
                 it.symbol.lowercase().contains(q)
             }
         }
+
+        // Pinned currencies at the top arranged alphabetically, followed by remaining currencies
+        val pinned = searched.filter { pinnedCurrencies.contains(it.code) }.sortedBy { it.code }
+        val unpinned = searched.filter { !pinnedCurrencies.contains(it.code) }
+        pinned + unpinned
     }
 
     ModalBottomSheet(
@@ -204,6 +211,15 @@ fun CurrencySelectSheet(
                                         fontWeight = FontWeight.Bold,
                                         color = if (isCurrent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                                     )
+                                    if (pinnedCurrencies.contains(currency.code)) {
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Icon(
+                                            imageVector = Icons.Default.PushPin,
+                                            contentDescription = "Pinned",
+                                            tint = MaterialTheme.colorScheme.primary,
+                                            modifier = Modifier.size(14.dp)
+                                        )
+                                    }
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Surface(
                                         shape = RoundedCornerShape(6.dp),

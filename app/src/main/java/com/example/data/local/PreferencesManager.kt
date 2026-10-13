@@ -24,11 +24,37 @@ class PreferencesManager(context: Context) {
         const val KEY_FEE_ENABLED = "fee_enabled"
         const val KEY_LAST_SYNC_TIME = "last_sync_time"
 
+        const val KEY_PINNED_CURRENCIES = "pinned_currencies"
+        val DEFAULT_PINNED_CURRENCIES = setOf("USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY")
+
         const val CADENCE_MANUAL = 0
         const val CADENCE_15_MIN = 15
         const val CADENCE_1_HOUR = 60
         const val CADENCE_6_HOURS = 360
         const val CADENCE_24_HOURS = 1440
+    }
+
+    private val _pinnedCurrenciesFlow = MutableStateFlow(getPinnedCurrencies())
+    val pinnedCurrenciesFlow: StateFlow<Set<String>> = _pinnedCurrenciesFlow.asStateFlow()
+
+    fun getPinnedCurrencies(): Set<String> {
+        return prefs.getStringSet(KEY_PINNED_CURRENCIES, DEFAULT_PINNED_CURRENCIES)?.toSet() ?: DEFAULT_PINNED_CURRENCIES
+    }
+
+    fun setPinnedCurrencies(currencies: Set<String>) {
+        prefs.edit().putStringSet(KEY_PINNED_CURRENCIES, currencies).apply()
+        _pinnedCurrenciesFlow.value = currencies
+    }
+
+    fun togglePinCurrency(code: String): Set<String> {
+        val current = getPinnedCurrencies().toMutableSet()
+        if (current.contains(code)) {
+            current.remove(code)
+        } else {
+            current.add(code)
+        }
+        setPinnedCurrencies(current)
+        return current
     }
 
     private val _themeModeFlow = MutableStateFlow(getThemeMode())

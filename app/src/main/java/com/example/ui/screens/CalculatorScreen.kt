@@ -51,6 +51,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ui.ActiveInputSource
 import com.example.ui.CurrencyUiState
 import com.example.ui.components.CurrencySelectSheet
 import com.example.ui.components.KeypadView
@@ -112,8 +113,14 @@ fun CalculatorScreen(
                 },
                 onSwap = onSwap,
                 onToggleSave = onToggleSavePair,
-                onBaseAmountClick = onBaseAmountClick,
-                onTargetAmountClick = onTargetAmountClick,
+                onBaseAmountClick = {
+                    calculatorSubTab = 0
+                    onBaseAmountClick()
+                },
+                onTargetAmountClick = {
+                    calculatorSubTab = 0
+                    onTargetAmountClick()
+                },
                 onSyncRates = onSyncRates
             )
 
@@ -155,7 +162,11 @@ fun CalculatorScreen(
                     MultiCompareSection(
                         state = state,
                         onSelectTarget = { code ->
-                            onTargetCurrencyChange(code)
+                            if (state.activeInputSource == ActiveInputSource.BASE) {
+                                onTargetCurrencyChange(code)
+                            } else {
+                                onBaseCurrencyChange(code)
+                            }
                             calculatorSubTab = 0
                         }
                     )
@@ -176,6 +187,7 @@ fun CalculatorScreen(
                 sheetState = sheetState,
                 title = "Select Base Currency (You Send)",
                 selectedCode = state.baseCurrency,
+                pinnedCurrencies = state.pinnedCurrencies,
                 onDismiss = {
                     isSelectingBase = false
                     coroutineScope.launch { sheetState.hide() }
@@ -194,6 +206,7 @@ fun CalculatorScreen(
                 sheetState = sheetState,
                 title = "Select Target Currency (You Receive)",
                 selectedCode = state.targetCurrency,
+                pinnedCurrencies = state.pinnedCurrencies,
                 onDismiss = {
                     isSelectingTarget = false
                     coroutineScope.launch { sheetState.hide() }

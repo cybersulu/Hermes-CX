@@ -301,7 +301,10 @@ fun UnitsScreen(
                         },
                         modifier = Modifier
                             .clip(RoundedCornerShape(18.dp))
-                            .clickable(onClick = onFromAmountClick)
+                            .clickable {
+                                unitsSubTab = 0
+                                onFromAmountClick()
+                            }
                             .testTag("from_unit_amount_box")
                     ) {
                         Column(
@@ -456,7 +459,10 @@ fun UnitsScreen(
                         },
                         modifier = Modifier
                             .clip(RoundedCornerShape(18.dp))
-                            .clickable(onClick = onToAmountClick)
+                            .clickable {
+                                unitsSubTab = 0
+                                onToAmountClick()
+                            }
                             .testTag("to_unit_amount_box")
                     ) {
                         Column(

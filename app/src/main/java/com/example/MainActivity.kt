@@ -182,6 +182,7 @@ class MainActivity : ComponentActivity() {
                                         viewModel.setTargetCurrency(targetCode)
                                         currentScreenIndex = 0 // Switch to calculator
                                     },
+                                    onTogglePin = viewModel::togglePinCurrency,
                                     onSyncRates = { viewModel.syncRates(force = true) }
                                 )
                             }
