@@ -1,0 +1,12 @@
+stroke "rgba(255,255,255,0.20)" stroke-width 4 fill none circle 256,256 256,60
+stroke "#FFFFFF" stroke-width 16 stroke-linecap round fill none path "M 109.2,187.5 L 114.0,177.9 L 119.5,168.7 L 125.6,159.8 L 132.3,151.4 L 139.5,143.4 L 147.3,135.9 L 155.5,129.0 L 164.1,122.6 L 173.2,116.8 L 182.6,111.6 L 192.3,107.0 L 202.4,103.1 L 212.6,99.9 L 223.1,97.4 L 233.7,95.5 L 244.4,94.4 L 255.1,94.0 L 265.9,94.3 L 276.6,95.3 L 287.2,97.0 L 297.7,99.5 L 308.0,102.6 L 318.1,106.4 L 327.9,110.8 L 337.3,115.9 L 346.5,121.6 L 355.2,127.9 L 363.5,134.8 L 371.3,142.2 L 378.6,150.1 L 385.3,158.4 L 391.5,167.2 L 397.1,176.4 L 402.1,186.0 L 406.4,195.8 L 410.1,205.9"
+stroke none fill "#FFFFFF" polygon 418,230 390,195 413,202 440,192
+stroke "#FFFFFF" stroke-width 16 stroke-linecap round fill none path "M 402.8,324.5 L 398.0,334.1 L 392.5,343.3 L 386.4,352.2 L 379.7,360.6 L 372.5,368.6 L 364.7,376.1 L 356.5,383.0 L 347.9,389.4 L 338.8,395.2 L 329.4,400.4 L 319.7,405.0 L 309.6,408.9 L 299.4,412.1 L 288.9,414.6 L 278.3,416.5 L 267.6,417.6 L 256.9,418.0 L 246.1,417.7 L 235.4,416.7 L 224.8,415.0 L 214.3,412.5 L 204.0,409.4 L 193.9,405.6 L 184.1,401.2 L 174.7,396.1 L 165.5,390.4 L 156.8,384.1 L 148.5,377.2 L 140.7,369.8 L 133.4,361.9 L 126.7,353.6 L 120.5,344.8 L 114.9,335.6 L 109.9,326.0 L 105.6,316.2 L 101.9,306.1"
+stroke none fill "#FFFFFF" polygon 94,282 122,317 99,310 72,320
+stroke "#FFFFFF" stroke-width 13 fill none circle 256,256 256,151
+stroke "#FFFFFF" stroke-width 10 fill none line 151,256 361,256
+stroke "#FFFFFF" stroke-width 10 fill none line 256,151 256,361
+stroke "#FFFFFF" stroke-width 8.5 fill none path "M 170,205 Q 256,224 342,205"
+stroke "#FFFFFF" stroke-width 8.5 fill none path "M 170,307 Q 256,288 342,307"
+stroke "#FFFFFF" stroke-width 8.5 fill none path "M 256,151 C 192,151 192,361 256,361"
+stroke "#FFFFFF" stroke-width 8.5 fill none path "M 256,151 C 320,151 320,361 256,361"

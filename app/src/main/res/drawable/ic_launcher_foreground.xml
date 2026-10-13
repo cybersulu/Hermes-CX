@@ -4,70 +4,82 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Outer ambient rings -->
+    <!-- Subtle outer glow / halo ring -->
     <path
-        android:strokeColor="#1E293B"
-        android:strokeWidth="1.5"
-        android:fillColor="#00000000"
-        android:pathData="M54,13 A41,41 0 1 0 54,95 A41,41 0 1 0 54,13" />
-    <path
-        android:strokeColor="#172554"
+        android:strokeColor="#33FFFFFF"
         android:strokeWidth="1.0"
         android:fillColor="#00000000"
-        android:pathData="M54,15.5 A38.5,38.5 0 1 0 54,92.5 A38.5,38.5 0 1 0 54,15.5" />
+        android:pathData="M54,27 A27,27 0 1 0 54,81 A27,27 0 1 0 54,27" />
 
-    <!-- Top clockwise exchange arrow: Emerald Green #10B981 -->
+    <!-- Globe Outer Circle (white outline) -->
     <path
-        android:fillColor="#10B981"
-        android:pathData="M54,20.5 C72.5,20.5 87.5,35.5 87.5,54 L94.5,54 L83.5,67 L72.5,54 L79.5,54 C79.5,40.0 68.0,28.5 54,28.5 C47.5,28.5 41.5,31.2 37.3,35.7 L30.8,29.2 C36.8,23.8 45.0,20.5 54,20.5 Z" />
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.8"
+        android:fillColor="#00000000"
+        android:pathData="M54,40 A14,14 0 1 0 54,68 A14,14 0 1 0 54,40" />
 
-    <!-- Bottom counter-clockwise exchange arrow: Cyan #06B6D4 -->
+    <!-- Globe Equator (horizontal line) -->
     <path
-        android:fillColor="#06B6D4"
-        android:pathData="M54,87.5 C35.5,87.5 20.5,72.5 20.5,54 L13.5,54 L24.5,41 L35.5,54 L28.5,54 C28.5,68.0 40.0,79.5 54,79.5 C60.5,79.5 66.5,76.8 70.7,72.3 L77.2,78.8 C71.2,84.2 63.0,87.5 54,87.5 Z" />
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.4"
+        android:fillColor="#00000000"
+        android:pathData="M40,54 L68,54" />
 
-    <!-- Caduceus Central Sphere in crisp #F8FAFC -->
+    <!-- Globe Prime Meridian (vertical line) -->
     <path
-        android:fillColor="#F8FAFC"
-        android:pathData="M54,31.3 A3.2,3.2 0 1 0 54,37.7 A3.2,3.2 0 1 0 54,31.3" />
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.4"
+        android:fillColor="#00000000"
+        android:pathData="M54,40 L54,68" />
 
-    <!-- Caduceus Vertical Staff -->
+    <!-- Globe Latitude Parallels (Arcs) -->
     <path
-        android:fillColor="#F8FAFC"
-        android:pathData="M52.6,37 L55.4,37 L55.4,71 L54,74 L52.6,71 Z" />
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.2"
+        android:fillColor="#00000000"
+        android:pathData="M42.5,47 Q54,49.5 65.5,47" />
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.2"
+        android:fillColor="#00000000"
+        android:pathData="M42.5,61 Q54,58.5 65.5,61" />
 
-    <!-- Caduceus Wings -->
-    <!-- Left Wing -->
+    <!-- Globe Meridians (Left and Right curved ellipses) -->
     <path
-        android:fillColor="#F8FAFC"
-        android:pathData="M53,38 C47,35.5 41,34 36,35.5 C37.5,38 39,40.5 37.5,43 C41.5,44 46,43.5 49.5,42.5 C51.5,41.8 52.8,40 53,38 Z" />
-    <!-- Right Wing -->
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.2"
+        android:fillColor="#00000000"
+        android:pathData="M54,40 C45.5,40 45.5,68 54,68" />
     <path
-        android:fillColor="#F8FAFC"
-        android:pathData="M55,38 C61,35.5 67,34 72,35.5 C70.5,38 69,40.5 70.5,43 C66.5,44 62,43.5 58.5,42.5 C56.5,41.8 55.2,40 55,38 Z" />
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.2"
+        android:fillColor="#00000000"
+        android:pathData="M54,40 C62.5,40 62.5,68 54,68" />
 
-    <!-- Caduceus Serpents -->
-    <!-- Left Snake Body -->
+    <!-- Circular Conversion Arrow 1: Upper clockwise arc -->
     <path
-        android:strokeColor="#F8FAFC"
-        android:strokeWidth="2.4"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M49,44.5 C45,46 43,49 44.5,52.5 C46,56 52,57 54,59 C56,61 61.5,62.5 61.5,65.5 C61.5,68 58,70 54,71" />
-    <!-- Left Snake Head -->
-    <path
-        android:fillColor="#F8FAFC"
-        android:pathData="M47,43 L50.5,44.8 L48,46.8 Z" />
+        android:pathData="M34.5,44.9 A21.5,21.5 0 0 1 74.5,47.4" />
 
-    <!-- Right Snake Body -->
+    <!-- Arrowhead 1 (Tip pointing down-right at ~74.8, 50.5) -->
     <path
-        android:strokeColor="#F8FAFC"
-        android:strokeWidth="2.4"
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M75.6,51.0 L70.5,45.2 L74.0,46.2 L77.5,44.8 Z" />
+
+    <!-- Circular Conversion Arrow 2: Lower counter-clockwise / continuing arc -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.2"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M59,44.5 C63,46 65,49 63.5,52.5 C62,56 56,57 54,59 C52,61 46.5,62.5 46.5,65.5 C46.5,68 50,70 54,71" />
-    <!-- Right Snake Head -->
+        android:pathData="M73.5,63.1 A21.5,21.5 0 0 1 33.5,60.6" />
+
+    <!-- Arrowhead 2 (Tip pointing up-left at ~32.4, 57.0) -->
     <path
-        android:fillColor="#F8FAFC"
-        android:pathData="M61,43 L57.5,44.8 L60,46.8 Z" />
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M32.4,57.0 L37.5,62.8 L34.0,61.8 L30.5,63.2 Z" />
+
 </vector>

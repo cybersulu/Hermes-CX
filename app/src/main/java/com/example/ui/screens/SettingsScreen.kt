@@ -119,7 +119,7 @@ fun SettingsScreen(
             ) {
                 Surface(
                     shape = RoundedCornerShape(16.dp),
-                    color = Color(0xFF0F172A),
+                    color = Color.Transparent,
                     modifier = Modifier.size(56.dp)
                 ) {
                     androidx.compose.foundation.Image(
@@ -127,7 +127,6 @@ fun SettingsScreen(
                         contentDescription = "Hermes CX Logo",
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(4.dp)
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))

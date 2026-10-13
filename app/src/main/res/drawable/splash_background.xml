@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Solid dark navy canvas matching Hermes CX branding -->
-    <item>
-        <color android:color="@color/hermes_splash_bg" />
-    </item>
+    <!-- Blue to Green gradient canvas matching the new icon style -->
+    <item android:drawable="@drawable/splash_gradient" />
 
-    <!-- Centered Hermes CX logo symbol -->
+    <!-- Centered high-resolution globe motif with conversion arrows -->
     <item
-        android:width="160dp"
-        android:height="160dp"
+        android:width="168dp"
+        android:height="168dp"
         android:gravity="center"
         android:drawable="@drawable/img_hermes_logo" />
 </layer-list>
