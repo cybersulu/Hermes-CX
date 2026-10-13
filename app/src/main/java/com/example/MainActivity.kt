@@ -24,7 +24,6 @@ import androidx.compose.material.icons.outlined.CurrencyExchange
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -42,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.MainViewModel
 import com.example.ui.screens.CalculatorScreen
@@ -114,42 +114,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     contentWindowInsets = WindowInsets.safeDrawing,
                     bottomBar = {
-                        val isDark = when (uiState.themeMode) {
-                            1 -> false
-                            2 -> true
-                            else -> isSystemInDarkTheme()
-                        }
-                        val navBarContainerColor = if (isDark) {
-                            MaterialTheme.colorScheme.primaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.primary
-                        }
-                        val navBarContentColor = if (isDark) {
-                            MaterialTheme.colorScheme.onPrimaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.onPrimary
-                        }
-                        val itemColors = if (isDark) {
-                            NavigationBarItemDefaults.colors(
-                                selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                                selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                indicatorColor = MaterialTheme.colorScheme.primary,
-                                unselectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f),
-                                unselectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f)
-                            )
-                        } else {
-                            NavigationBarItemDefaults.colors(
-                                selectedIconColor = MaterialTheme.colorScheme.primary,
-                                selectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                                indicatorColor = MaterialTheme.colorScheme.surface,
-                                unselectedIconColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.72f),
-                                unselectedTextColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.72f)
-                            )
-                        }
-
                         NavigationBar(
-                            containerColor = navBarContainerColor,
-                            contentColor = navBarContentColor,
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            contentColor = MaterialTheme.colorScheme.onSurface,
+                            tonalElevation = 2.dp,
                             modifier = Modifier.testTag("bottom_nav_bar")
                         ) {
                             Screen.entries.forEachIndexed { index, screen ->
@@ -169,7 +137,13 @@ class MainActivity : ComponentActivity() {
                                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                                         )
                                     },
-                                    colors = itemColors,
+                                    colors = NavigationBarItemDefaults.colors(
+                                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                                        selectedTextColor = MaterialTheme.colorScheme.primary,
+                                        indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                    ),
                                     modifier = Modifier.testTag(screen.testTag)
                                 )
                             }
