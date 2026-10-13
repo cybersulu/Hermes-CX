@@ -517,25 +517,20 @@ fun UnitsScreen(
             Tab(
                 selected = unitsSubTab == 1,
                 onClick = { unitsSubTab = 1 },
-                text = { Text("All ${state.selectedCategory.displayName} Units", fontWeight = FontWeight.SemiBold) },
+                text = { Text("Compare", fontWeight = FontWeight.SemiBold) },
                 modifier = Modifier.testTag("tab_unit_compare")
             )
         }
 
-            if (unitsSubTab == 1) {
-                Spacer(modifier = Modifier.height(8.dp))
-                UnitCategorySelectorStrip(
-                    selectedCategory = state.selectedCategory,
-                    onCategoryChange = onCategoryChange
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                // ALL UNITS LIST
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("all_units_comparison_list"),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+        if (unitsSubTab == 1) {
+            Spacer(modifier = Modifier.height(10.dp))
+            // ALL UNITS LIST
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("all_units_comparison_list"),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                     state.liveComparisons.forEach { (unit, convertedVal) ->
                         val isCurrentTarget = unit.id == state.toUnit.id
                         val isCurrentFrom = unit.id == state.fromUnit.id

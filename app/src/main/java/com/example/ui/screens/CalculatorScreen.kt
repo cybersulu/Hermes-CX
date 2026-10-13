@@ -143,7 +143,7 @@ fun CalculatorScreen(
                     Tab(
                         selected = calculatorSubTab == 1,
                         onClick = { calculatorSubTab = 1 },
-                        text = { Text("Multi-Compare", fontWeight = FontWeight.SemiBold) },
+                        text = { Text("Compare", fontWeight = FontWeight.SemiBold) },
                         modifier = Modifier.testTag("tab_compare")
                     )
                 }

@@ -48,7 +48,7 @@ fun MultiCompareSection(
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = "Quick Compare (${state.inputAmount.ifEmpty { "0" }} ${state.baseCurrency})",
+            text = "Compare (${state.inputAmount.ifEmpty { "0" }} ${state.baseCurrency})",
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
