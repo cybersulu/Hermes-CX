@@ -184,6 +184,13 @@ class CurrencyRepository(
         dao.updateSavedPair(pair.copy(isPinned = !pair.isPinned))
     }
 
+    suspend fun updateSavedPair(id: Long, base: String, target: String) = withContext(Dispatchers.IO) {
+        val existing = dao.getAllSavedPairsSync().find { it.id == id }
+        if (existing != null) {
+            dao.updateSavedPair(existing.copy(baseCurrency = base, targetCurrency = target))
+        }
+    }
+
     suspend fun recordConversion(
         from: String,
         to: String,

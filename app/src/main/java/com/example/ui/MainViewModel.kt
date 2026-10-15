@@ -365,6 +365,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun updateSavedPair(id: Long, base: String, target: String) {
+        viewModelScope.launch {
+            repository.updateSavedPair(id, base, target)
+        }
+    }
+
     fun addCustomPair(base: String, target: String) {
         viewModelScope.launch {
             repository.saveCurrencyPair(base, target)

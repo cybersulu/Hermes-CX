@@ -167,6 +167,8 @@ class MainActivity : ComponentActivity() {
                                     onKeypadPress = viewModel::appendKeypad,
                                     onQuickAmountSelected = viewModel::quickSetAmount,
                                     onToggleSavePair = viewModel::toggleSaveCurrentPair,
+                                    onSelectPair = viewModel::selectPair,
+                                    onUpdateSavedPair = viewModel::updateSavedPair,
                                     onSyncRates = { viewModel.syncRates(force = true) },
                                     onDismissSyncMessage = viewModel::dismissSyncMessage,
                                     onAmountClick = viewModel::selectBaseInput,
