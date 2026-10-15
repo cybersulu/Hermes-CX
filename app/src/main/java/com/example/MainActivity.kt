@@ -44,7 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.MainViewModel
-import com.example.ui.screens.CalculatorScreen
+import com.example.ui.screens.CurrencyScreen
 import com.example.ui.screens.MarketRatesScreen
 import com.example.ui.screens.SettingsScreen
 import com.example.ui.screens.UnitsScreen
@@ -104,7 +104,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 var currentScreenIndex by remember { mutableIntStateOf(0) }
 
-                // BackHandler returns to Calculator if on another tab
+                // BackHandler returns to Currency screen if on another tab
                 if (currentScreenIndex != 0) {
                     BackHandler {
                         currentScreenIndex = 0
@@ -159,7 +159,7 @@ class MainActivity : ComponentActivity() {
                     ) { index ->
                         when (Screen.entries[index]) {
                             Screen.CALCULATOR -> {
-                                CalculatorScreen(
+                                CurrencyScreen(
                                     state = uiState,
                                     onBaseCurrencyChange = viewModel::setBaseCurrency,
                                     onTargetCurrencyChange = viewModel::setTargetCurrency,

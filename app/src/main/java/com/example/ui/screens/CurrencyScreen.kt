@@ -75,7 +75,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalculatorScreen(
+fun CurrencyScreen(
     state: CurrencyUiState,
     onBaseCurrencyChange: (String) -> Unit,
     onTargetCurrencyChange: (String) -> Unit,
