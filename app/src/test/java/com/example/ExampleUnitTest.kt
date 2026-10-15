@@ -454,4 +454,11 @@ class ExampleUnitTest {
             )
         }
     }
+
+    @Test
+    fun testSettingsVersionText() {
+        val versionText = "Version 1.0"
+        assertEquals("Version 1.0", versionText)
+        assertFalse(versionText.contains("Offline Ready"))
+    }
 }

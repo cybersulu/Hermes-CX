@@ -157,25 +157,12 @@ fun RateDisplayCard(
 
                         Spacer(modifier = Modifier.height(2.dp))
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(6.dp)
-                                    .clip(CircleShape)
-                                    .background(
-                                        if (state.isOffline) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary
-                                    )
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = if (state.isOffline) "Offline • Updated $formattedLastUpdate" else "Updated $formattedLastUpdate",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.testTag("updated_timestamp_text")
-                            )
-                        }
+                        Text(
+                            text = if (state.isOffline) "Offline • Updated $formattedLastUpdate" else "Updated $formattedLastUpdate",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.testTag("updated_timestamp_text")
+                        )
                     }
 
                     if (state.isSyncing) {
