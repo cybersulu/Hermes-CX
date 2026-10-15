@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -41,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.Currency
@@ -77,14 +79,13 @@ fun CurrencySelectSheet(
             baseList.filter {
                 it.code.lowercase().contains(q) ||
                 it.name.lowercase().contains(q) ||
+                it.country.lowercase().contains(q) ||
                 it.symbol.lowercase().contains(q)
             }
         }
 
-        // Pinned currencies at the top arranged alphabetically, followed by remaining currencies
-        val pinned = searched.filter { pinnedCurrencies.contains(it.code) }.sortedBy { it.code }
-        val unpinned = searched.filter { !pinnedCurrencies.contains(it.code) }
-        pinned + unpinned
+        // Pinned currencies at the top arranged alphabetically by country, followed by remaining currencies arranged alphabetically by country
+        CurrencyCatalog.orderCurrencies(searched, pinnedCurrencies)
     }
 
     ModalBottomSheet(
@@ -170,6 +171,7 @@ fun CurrencySelectSheet(
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .defaultMinSize(minHeight = 72.dp)
                             .clickable {
                                 onCurrencySelected(currency.code)
                                 onDismiss()
@@ -186,7 +188,8 @@ fun CurrencySelectSheet(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 14.dp, vertical = 12.dp),
+                                .defaultMinSize(minHeight = 72.dp)
+                                .padding(horizontal = 14.dp, vertical = 8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             // Flag Box
@@ -203,7 +206,11 @@ fun CurrencySelectSheet(
 
                             Spacer(modifier = Modifier.width(14.dp))
 
-                            Column(modifier = Modifier.weight(1f)) {
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(end = 8.dp)
+                            ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(
                                         text = currency.code,
@@ -235,9 +242,16 @@ fun CurrencySelectSheet(
                                     }
                                 }
                                 Text(
-                                    text = currency.name,
+                                    text = if (currency.country.isNotBlank() && currency.country != currency.name) {
+                                        "${currency.country} • ${currency.name}"
+                                    } else {
+                                        currency.name
+                                    },
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    softWrap = true,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
 

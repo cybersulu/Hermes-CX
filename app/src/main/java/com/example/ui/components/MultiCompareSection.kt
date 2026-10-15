@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.CurrencyCatalog
@@ -44,10 +46,15 @@ fun MultiCompareSection(
         state.baseCurrency
     }
 
-    // Only show pinned currencies on the Currency Compare sub-tab (excluding entered and other selected currency)
+    // Only show pinned currencies on the Currency Compare sub-tab (excluding entered and other selected currency), ordered alphabetically by country
     val comparisonCodes = state.pinnedCurrencies
         .filter { it != enteredCurrencyCode && it != otherSelectedCurrency }
-        .sorted()
+        .sortedWith(Comparator { a, b ->
+            val c1 = CurrencyCatalog.getCurrency(a).country
+            val c2 = CurrencyCatalog.getCurrency(b).country
+            val comp = c1.compareTo(c2, ignoreCase = true)
+            if (comp != 0) comp else a.compareTo(b, ignoreCase = true)
+        })
 
     val formatter = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale.US))
     val enteredAmount = state.numericInput
@@ -98,6 +105,7 @@ fun MultiCompareSection(
                     tonalElevation = 1.dp,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .defaultMinSize(minHeight = 76.dp)
                         .clip(RoundedCornerShape(16.dp))
                         .clickable { onSelectTarget(code) }
                         .testTag("compare_item_$code")
@@ -105,14 +113,20 @@ fun MultiCompareSection(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 14.dp, vertical = 10.dp),
+                            .defaultMinSize(minHeight = 76.dp)
+                            .padding(horizontal = 14.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Text(text = currency.flag, fontSize = 22.sp)
                             Spacer(modifier = Modifier.width(10.dp))
-                            Column {
+                            Column(modifier = Modifier.weight(1f, fill = false)) {
                                 Text(
                                     text = currency.code,
                                     style = MaterialTheme.typography.titleSmall,
@@ -120,25 +134,40 @@ fun MultiCompareSection(
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = currency.name,
+                                    text = if (currency.country.isNotBlank() && currency.country != currency.name) {
+                                        "${currency.country} • ${currency.name}"
+                                    } else {
+                                        currency.name
+                                    },
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    softWrap = true,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
 
-                        Column(horizontalAlignment = Alignment.End) {
+                        Column(
+                            horizontalAlignment = Alignment.End,
+                            modifier = Modifier.padding(start = 4.dp)
+                        ) {
                             Text(
                                 text = "${currency.symbol} ${formatter.format(converted)}",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary,
-                                textAlign = TextAlign.End
+                                textAlign = TextAlign.End,
+                                maxLines = 1,
+                                softWrap = false
                             )
                             Text(
                                 text = "1 $enteredCurrencyCode = ${String.format(Locale.US, "%.4f", rate)}",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.outline
+                                color = MaterialTheme.colorScheme.outline,
+                                textAlign = TextAlign.End,
+                                maxLines = 1,
+                                softWrap = false
                             )
                         }
                     }

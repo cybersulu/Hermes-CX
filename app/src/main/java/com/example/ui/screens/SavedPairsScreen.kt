@@ -343,6 +343,7 @@ fun SavedPairsScreen(
                 sheetState = sheetState,
                 title = "Select From Currency",
                 selectedCode = newBase,
+                pinnedCurrencies = state.pinnedCurrencies,
                 onDismiss = {
                     pickingBaseForNew = false
                     coroutineScope.launch { sheetState.hide() }
@@ -360,6 +361,7 @@ fun SavedPairsScreen(
                 sheetState = sheetState,
                 title = "Select To Currency",
                 selectedCode = newTarget,
+                pinnedCurrencies = state.pinnedCurrencies,
                 onDismiss = {
                     pickingTargetForNew = false
                     coroutineScope.launch { sheetState.hide() }

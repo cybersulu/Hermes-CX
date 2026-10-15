@@ -179,7 +179,7 @@ class MainActivity : ComponentActivity() {
                             Screen.RATES -> {
                                 MarketRatesScreen(
                                     state = uiState,
-                                    onSelectBase = viewModel::setBaseCurrency,
+                                    onSelectBase = viewModel::setMarketBaseCurrency,
                                     onSelectTargetAndOpen = { targetCode ->
                                         viewModel.setTargetCurrency(targetCode)
                                         currentScreenIndex = 0 // Switch to calculator

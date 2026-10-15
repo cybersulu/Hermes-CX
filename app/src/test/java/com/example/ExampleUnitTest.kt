@@ -346,4 +346,112 @@ class ExampleUnitTest {
         assertEquals(150.0, rateEurToJpy, 0.001)
         assertEquals(12000.0, stateTarget.numericInput * rateEurToJpy, 0.001)
     }
+
+    @Test
+    fun testUncoupledMarketBaseCurrency() {
+        val state = CurrencyUiState(
+            baseCurrency = "USD",
+            targetCurrency = "EUR",
+            marketBaseCurrency = "GBP"
+        )
+        // Ensure baseCurrency and marketBaseCurrency are distinct and independent
+        assertEquals("USD", state.baseCurrency)
+        assertEquals("EUR", state.targetCurrency)
+        assertEquals("GBP", state.marketBaseCurrency)
+
+        // Changing base currency on Currency screen does not change marketBaseCurrency
+        val updatedCurrencyScreen = state.copy(baseCurrency = "JPY")
+        assertEquals("JPY", updatedCurrencyScreen.baseCurrency)
+        assertEquals("GBP", updatedCurrencyScreen.marketBaseCurrency)
+
+        // Changing market base currency does not change baseCurrency
+        val updatedMarketScreen = state.copy(marketBaseCurrency = "AUD")
+        assertEquals("USD", updatedMarketScreen.baseCurrency)
+        assertEquals("AUD", updatedMarketScreen.marketBaseCurrency)
+    }
+
+    @Test
+    fun testUnitsUiStateConversionPairRecall() {
+        val initialPair = UnitsUiState(
+            selectedCategory = UnitCategory.SPEED,
+            fromUnit = UnitCatalog.getUnit("kmh")!!,
+            toUnit = UnitCatalog.getUnit("mph")!!
+        )
+        assertEquals(UnitCategory.SPEED, initialPair.selectedCategory)
+        assertEquals("kmh", initialPair.fromUnit.id)
+        assertEquals("mph", initialPair.toUnit.id)
+
+        // Swapping units reverses the pair
+        val swapped = initialPair.copy(
+            fromUnit = initialPair.toUnit,
+            toUnit = initialPair.fromUnit
+        )
+        assertEquals("mph", swapped.fromUnit.id)
+        assertEquals("kmh", swapped.toUnit.id)
+    }
+
+    @Test
+    fun testMarketRatesTimestampFormatting() {
+        val state = CurrencyUiState(
+            lastUpdatedMillis = 1728950400000L, // Oct 15, 2024
+            marketBaseCurrency = "EUR"
+        )
+        val timeFormatter = java.text.SimpleDateFormat("MMM d, HH:mm", java.util.Locale.US)
+        val formatted = timeFormatter.format(java.util.Date(state.lastUpdatedMillis))
+        assertTrue(formatted.contains("Oct 14") || formatted.contains("Oct 15"))
+        assertEquals("EUR", state.marketBaseCurrency)
+    }
+
+    @Test
+    fun testCurrenciesCountryAlphabeticalOrderingWithPinnedFirst() {
+        val all = CurrencyCatalog.allCurrencies
+        assertTrue(all.isNotEmpty())
+
+        val pinnedCodes = setOf("USD", "JPY", "AUD")
+        val ordered = CurrencyCatalog.orderCurrencies(all, pinnedCodes)
+
+        // Total count preserved
+        assertEquals(all.size, ordered.size)
+
+        // First 3 currencies must be the pinned ones
+        val pinnedResult = ordered.take(pinnedCodes.size)
+        val unpinnedResult = ordered.drop(pinnedCodes.size)
+
+        // Pinned elements are exactly the pinnedCodes
+        assertEquals(pinnedCodes, pinnedResult.map { it.code }.toSet())
+
+        // Pinned elements must be arranged alphabetically by country:
+        // Australia (AUD), Japan (JPY), United States (USD)
+        assertEquals(listOf("AUD", "JPY", "USD"), pinnedResult.map { it.code })
+        assertEquals(listOf("Australia", "Japan", "United States"), pinnedResult.map { it.country })
+
+        // Check that pinned items are sorted alphabetically by country
+        for (i in 0 until pinnedResult.size - 1) {
+            assertTrue(
+                "Pinned item ${pinnedResult[i].country} should be <= ${pinnedResult[i+1].country}",
+                pinnedResult[i].country.compareTo(pinnedResult[i+1].country, ignoreCase = true) <= 0
+            )
+        }
+
+        // Check that unpinned items are sorted alphabetically by country
+        for (i in 0 until unpinnedResult.size - 1) {
+            assertTrue(
+                "Unpinned item ${unpinnedResult[i].country} should be <= ${unpinnedResult[i+1].country}",
+                unpinnedResult[i].country.compareTo(unpinnedResult[i+1].country, ignoreCase = true) <= 0
+            )
+        }
+
+        // None of the unpinned items should be in pinnedCodes
+        for (item in unpinnedResult) {
+            assertFalse(pinnedCodes.contains(item.code))
+        }
+
+        // When no pinned codes, entire list is arranged alphabetically by country
+        val allUnpinned = CurrencyCatalog.orderCurrencies(all, emptySet())
+        for (i in 0 until allUnpinned.size - 1) {
+            assertTrue(
+                allUnpinned[i].country.compareTo(allUnpinned[i+1].country, ignoreCase = true) <= 0
+            )
+        }
+    }
 }

@@ -29,6 +29,7 @@ enum class ActiveInputSource {
 data class CurrencyUiState(
     val baseCurrency: String = "USD",
     val targetCurrency: String = "EUR",
+    val marketBaseCurrency: String = "USD",
     val inputAmount: String = "100",
     val activeInputSource: ActiveInputSource = ActiveInputSource.TARGET,
     val ratesMap: Map<String, Double> = CurrencyCatalog.defaultUsdRates,
@@ -113,6 +114,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         CurrencyUiState(
             baseCurrency = preferences.getDefaultBase(),
             targetCurrency = preferences.getDefaultTarget(),
+            marketBaseCurrency = preferences.getMarketBase(),
             themeMode = preferences.getThemeMode(),
             themeColorId = preferences.getThemeColorId(),
             customThemeColor = preferences.getCustomThemeColor(),
@@ -125,7 +127,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     )
     val uiState: StateFlow<CurrencyUiState> = _uiState.asStateFlow()
 
-    private val _unitsState = MutableStateFlow(UnitsUiState())
+    private val _unitsState = MutableStateFlow(
+        run {
+            val category = preferences.getUnitCategory()
+            val fromId = preferences.getUnitFrom(category)
+            val toId = preferences.getUnitTo(category)
+            val (defaultFrom, defaultTo) = UnitCatalog.getDefaultUnitsForCategory(category)
+            val from = UnitCatalog.getUnit(fromId)?.takeIf { it.category == category } ?: defaultFrom
+            var to = UnitCatalog.getUnit(toId)?.takeIf { it.category == category } ?: defaultTo
+            if (from.id == to.id) {
+                to = if (from.id == defaultFrom.id) defaultTo else defaultFrom
+            }
+            UnitsUiState(
+                selectedCategory = category,
+                fromUnit = from,
+                toUnit = to
+            )
+        }
+    )
     val unitsState: StateFlow<UnitsUiState> = _unitsState.asStateFlow()
 
     init {
@@ -205,6 +224,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
         _uiState.value = _uiState.value.copy(baseCurrency = code)
         preferences.setDefaultBase(code)
+    }
+
+    fun setMarketBaseCurrency(code: String) {
+        if (_uiState.value.marketBaseCurrency == code) return
+        _uiState.value = _uiState.value.copy(marketBaseCurrency = code)
+        preferences.setMarketBase(code)
     }
 
     fun setTargetCurrency(code: String) {
@@ -451,10 +476,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setUnitCategory(category: UnitCategory) {
         val (defFrom, defTo) = UnitCatalog.getDefaultUnitsForCategory(category)
+        val savedFromId = preferences.getUnitFrom(category)
+        val savedToId = preferences.getUnitTo(category)
+        val from = UnitCatalog.getUnit(savedFromId)?.takeIf { it.category == category } ?: defFrom
+        var to = UnitCatalog.getUnit(savedToId)?.takeIf { it.category == category } ?: defTo
+        if (from.id == to.id) {
+            to = if (from.id == defFrom.id) defTo else defFrom
+        }
+        preferences.setUnitPair(category, from.id, to.id)
         _unitsState.value = _unitsState.value.copy(
             selectedCategory = category,
-            fromUnit = defFrom,
-            toUnit = defTo,
+            fromUnit = from,
+            toUnit = to,
             inputAmount = "1",
             activeInputSource = ActiveInputSource.BASE,
             isAmountHighlighted = false
@@ -468,6 +501,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
         _unitsState.value = _unitsState.value.copy(fromUnit = unit)
+        preferences.setUnitPair(_unitsState.value.selectedCategory, unit.id, _unitsState.value.toUnit.id)
     }
 
     fun setToUnit(unit: ConversionUnit) {
@@ -477,6 +511,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
         _unitsState.value = _unitsState.value.copy(toUnit = unit)
+        preferences.setUnitPair(_unitsState.value.selectedCategory, _unitsState.value.fromUnit.id, unit.id)
     }
 
     fun swapUnits() {
@@ -486,6 +521,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             fromUnit = curTo,
             toUnit = curFrom
         )
+        preferences.setUnitPair(_unitsState.value.selectedCategory, curTo.id, curFrom.id)
     }
 
     fun selectUnitFromInput() {

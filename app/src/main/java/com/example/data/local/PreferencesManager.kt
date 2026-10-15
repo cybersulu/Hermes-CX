@@ -2,6 +2,8 @@ package com.example.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.data.model.UnitCatalog
+import com.example.data.model.UnitCategory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,6 +21,10 @@ class PreferencesManager(context: Context) {
         const val DEFAULT_CUSTOM_COLOR = 0xFF7C3AED.toInt() // Vibrant Indigo/Violet
         const val KEY_DEFAULT_BASE = "default_base"
         const val KEY_DEFAULT_TARGET = "default_target"
+        const val KEY_MARKET_BASE = "market_base"
+        const val KEY_UNIT_CATEGORY = "unit_category"
+        const val KEY_UNIT_FROM = "unit_from"
+        const val KEY_UNIT_TO = "unit_to"
         const val KEY_DECIMAL_PLACES = "decimal_places"
         const val KEY_FEE_PERCENT = "fee_percent"
         const val KEY_FEE_ENABLED = "fee_enabled"
@@ -108,6 +114,49 @@ class PreferencesManager(context: Context) {
 
     fun setDefaultTarget(currency: String) {
         prefs.edit().putString(KEY_DEFAULT_TARGET, currency).apply()
+    }
+
+    fun getMarketBase(): String = prefs.getString(KEY_MARKET_BASE, "USD") ?: "USD"
+
+    fun setMarketBase(currency: String) {
+        prefs.edit().putString(KEY_MARKET_BASE, currency).apply()
+    }
+
+    fun getUnitCategory(): UnitCategory {
+        val name = prefs.getString(KEY_UNIT_CATEGORY, UnitCategory.LENGTH.name) ?: UnitCategory.LENGTH.name
+        return try {
+            UnitCategory.valueOf(name)
+        } catch (e: Exception) {
+            UnitCategory.LENGTH
+        }
+    }
+
+    fun setUnitCategory(category: UnitCategory) {
+        prefs.edit().putString(KEY_UNIT_CATEGORY, category.name).apply()
+    }
+
+    fun getUnitFrom(category: UnitCategory): String {
+        val defaultFrom = UnitCatalog.getDefaultUnitsForCategory(category).first.id
+        return prefs.getString("unit_from_${category.name}", null)
+            ?: prefs.getString(KEY_UNIT_FROM, null)?.takeIf { UnitCatalog.getUnit(it)?.category == category }
+            ?: defaultFrom
+    }
+
+    fun getUnitTo(category: UnitCategory): String {
+        val defaultTo = UnitCatalog.getDefaultUnitsForCategory(category).second.id
+        return prefs.getString("unit_to_${category.name}", null)
+            ?: prefs.getString(KEY_UNIT_TO, null)?.takeIf { UnitCatalog.getUnit(it)?.category == category }
+            ?: defaultTo
+    }
+
+    fun setUnitPair(category: UnitCategory, fromUnitId: String, toUnitId: String) {
+        prefs.edit()
+            .putString(KEY_UNIT_CATEGORY, category.name)
+            .putString(KEY_UNIT_FROM, fromUnitId)
+            .putString(KEY_UNIT_TO, toUnitId)
+            .putString("unit_from_${category.name}", fromUnitId)
+            .putString("unit_to_${category.name}", toUnitId)
+            .apply()
     }
 
     fun getDecimalPlaces(): Int = prefs.getInt(KEY_DECIMAL_PLACES, 2)
