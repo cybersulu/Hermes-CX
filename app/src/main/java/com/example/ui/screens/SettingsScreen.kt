@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Percent
+import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Storage
@@ -61,6 +62,7 @@ import com.example.data.local.PreferencesManager
 import com.example.data.model.CurrencyCatalog
 import com.example.ui.CurrencyUiState
 import com.example.ui.components.CustomColorPickerDialog
+import com.example.ui.components.PrivacyPolicyDialog
 import com.example.ui.theme.PRESET_THEMES
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -81,6 +83,7 @@ fun SettingsScreen(
 ) {
     val scrollState = rememberScrollState()
     var showCustomColorDialog by remember { mutableStateOf(false) }
+    var showPrivacyPolicyDialog by remember { mutableStateOf(false) }
 
     val cadenceOptions = listOf(
         PreferencesManager.CADENCE_MANUAL to "Manual Only (Save data)",
@@ -586,6 +589,58 @@ fun SettingsScreen(
             }
         }
 
+        // 5. PRIVACY POLICY CARD
+        Card(
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(24.dp))
+                .clickable { showPrivacyPolicyDialog = true }
+                .testTag("card_privacy_policy")
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PrivacyTip,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column {
+                        Text(
+                            text = "Privacy Policy",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "How Hermes CX handles your data & permissions",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                    }
+                }
+                OutlinedButton(
+                    onClick = { showPrivacyPolicyDialog = true },
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.testTag("btn_privacy_policy")
+                ) {
+                    Text("View")
+                }
+            }
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
     }
 
@@ -596,6 +651,12 @@ fun SettingsScreen(
             onColorSelected = { colorInt ->
                 onCustomThemeColorChange(colorInt)
             }
+        )
+    }
+
+    if (showPrivacyPolicyDialog) {
+        PrivacyPolicyDialog(
+            onDismiss = { showPrivacyPolicyDialog = false }
         )
     }
 }
