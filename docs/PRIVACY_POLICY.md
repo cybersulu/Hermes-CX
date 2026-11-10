@@ -42,4 +42,4 @@ We may update this Privacy Policy from time to time to reflect changes to the Ap
 
 ## 8. Contact Us
 If you have any questions or concerns about this Privacy Policy or the App's privacy practices, please contact the developer at:
-- **Email:** pete.teoh@gmail.com
+- **Email:** teohpix@gmail.com
