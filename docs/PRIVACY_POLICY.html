@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy for Hermes CX</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-color: #2563eb;
+            --border-color: #e2e8f0;
+            --code-bg: #f1f5f9;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f172a;
+                --card-bg: #1e293b;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --accent-color: #60a5fa;
+                --border-color: #334155;
+                --code-bg: #0f172a;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.65;
+            margin: 0;
+            padding: 32px 16px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 36px 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 24px 20px;
+            }
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .meta {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            padding-bottom: 20px;
+            margin-bottom: 28px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .meta p {
+            margin: 4px 0;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            margin-top: 28px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 14px;
+            color: var(--text-secondary);
+        }
+
+        ul {
+            margin-top: 0;
+            margin-bottom: 16px;
+            padding-left: 24px;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.9em;
+            background-color: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 6px;
+            color: var(--text-primary);
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1>Privacy Policy for Hermes CX</h1>
+        <div class="meta">
+            <p><strong>Effective Date:</strong> November 9, 2026</p>
+            <p><strong>Application Name:</strong> Hermes CX (Currency &amp; Unit Converter)</p>
+        </div>
+
+        <section>
+            <h2>1. Overview</h2>
+            <p>Hermes CX ("the App") is a currency and unit converter application for Android. We respect your privacy and are committed to protecting it. The App is designed to operate primarily on your device and does not collect, store, sell, or share any personal information.</p>
+        </section>
+
+        <section>
+            <h2>2. Information We Collect</h2>
+
+            <h3>a. Personal Information</h3>
+            <p>We <strong>do not</strong> collect, request, or store any personally identifiable information (PII) such as your name, email address, phone number, physical address, account credentials, contacts, or precise location. No user account or sign-in is required to use the App.</p>
+
+            <h3>b. Local Device Storage</h3>
+            <p>To provide a seamless and offline-capable experience, the App stores the following non-personal configuration data exclusively on your device using Android local storage (<code>SharedPreferences</code> and an on-device SQLite/Room database):</p>
+            <ul>
+                <li>Cached currency exchange rates and last-sync timestamps for offline calculations</li>
+                <li>Pinned currencies and saved currency pairs</li>
+                <li>Selected unit conversion categories and unit pairs</li>
+                <li>Display and calculation preferences (theme mode, accent color palette, decimal precision, optional bank/transfer fee percentage, and rate refresh frequency)</li>
+            </ul>
+            <p>This data remains strictly on your device and is never transmitted to us or any third party. You can clear all locally stored data at any time through your device's Android System Settings (<strong>Settings &gt; Apps &gt; Hermes CX &gt; Storage &amp; cache &gt; Clear storage</strong>) or by uninstalling the App.</p>
+        </section>
+
+        <section>
+            <h2>3. Permissions Used</h2>
+            <p>The App requests only the minimum technical permissions necessary to function:</p>
+            <ul>
+                <li><strong><code>android.permission.INTERNET</code></strong>: Used solely to fetch the latest public foreign exchange rates over secure HTTPS connections.</li>
+                <li><strong><code>android.permission.ACCESS_NETWORK_STATE</code></strong>: Used to check whether your device has an active network connection so the App can seamlessly switch to cached offline rates when you are offline.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Third-Party Services</h2>
+            <p>To provide up-to-date currency exchange rates, the App makes read-only HTTPS requests to the public <strong>ExchangeRate-API</strong> (<a href="https://open.er-api.com/" target="_blank" rel="noopener noreferrer"><code>https://open.er-api.com/</code></a>). When the App requests updated currency rates:</p>
+            <ul>
+                <li>Only the requested currency code is sent in the API endpoint URL.</li>
+                <li>Standard network metadata (such as your IP address and standard HTTP request headers) is processed by the API provider solely to deliver the response over the internet.</li>
+                <li>The App does not include any third-party advertising SDKs, analytics trackers, or crash-reporting profilers.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Children's Privacy</h2>
+            <p>The App does not knowingly collect any personal information from anyone, including children under the age of 13. Because no personal data is collected or transmitted, the App is safe for general audiences.</p>
+        </section>
+
+        <section>
+            <h2>6. Data Security</h2>
+            <p>All network requests for public exchange rate updates are transmitted over encrypted HTTPS connections, and all user preferences are stored locally within Android's sandboxed application storage.</p>
+        </section>
+
+        <section>
+            <h2>7. Changes to This Privacy Policy</h2>
+            <p>We may update this Privacy Policy from time to time to reflect changes to the App or legal requirements. Any updates will be reflected with a revised "Effective Date" at the top of this policy and within the App.</p>
+        </section>
+
+        <section>
+            <h2>8. Contact Us</h2>
+            <p>If you have any questions or concerns about this Privacy Policy or the App's privacy practices, please contact the developer at:</p>
+            <ul>
+                <li><strong>Email:</strong> <a href="mailto:pete.teoh@gmail.com">pete.teoh@gmail.com</a></li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>
