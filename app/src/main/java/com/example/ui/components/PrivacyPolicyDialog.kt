@@ -114,7 +114,7 @@ fun PrivacyPolicyDialog(
                     )
                     PolicySection(
                         title = "7. Contact",
-                        body = "For questions about this Privacy Policy, please contact: teohpix@gmail.com"
+                        body = "For questions about this Privacy Policy, please contact: help@cybersulu.com"
                     )
                 }
 
