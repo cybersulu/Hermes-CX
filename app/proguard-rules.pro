@@ -1,21 +1,67 @@
-# Add project specific ProGuard rules here.
+# Add project specific ProGuard / R8 rules here.
 # You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# proguardFiles setting in build.gradle.kts.
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# --------------------------------------------------------------------------
+# General R8 / DEX Code Optimization Settings
+# --------------------------------------------------------------------------
+-optimizationpasses 5
+-allowaccessmodification
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Preserve line number information for crash stack traces while hiding source filenames
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Preserve generic type signatures and annotations required by Retrofit, Moshi, and Room
+-keepattributes Signature,InnerClasses,EnclosingMethod,RuntimeVisibleAnnotations,RuntimeVisibleParameterAnnotations,AnnotationDefault
+
+# Strip verbose/debug Android log calls in release DEX builds
+-assumenosideeffects class android.util.Log {
+    public static int v(...);
+    public static int d(...);
+}
+
+# --------------------------------------------------------------------------
+# Retrofit 2 & OkHttp 3 Rules
+# --------------------------------------------------------------------------
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**
+
+# Keep Retrofit service interfaces and method signatures
+-keepinterface com.example.data.remote.CurrencyApiService { *; }
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+
+# --------------------------------------------------------------------------
+# Moshi & Moshi Kotlin Codegen Rules
+# --------------------------------------------------------------------------
+-dontwarn com.squareup.moshi.**
+
+# Keep @JsonClass annotated classes and their KSP-generated JsonAdapters
+-keep @com.squareup.moshi.JsonClass class * { *; }
+-keep class **JsonAdapter {
+    public <init>(com.squareup.moshi.Moshi);
+    public <init>(com.squareup.moshi.Moshi, java.lang.reflect.Type[]);
+}
+
+# Explicitly preserve API response model
+-keep class com.example.data.model.ExchangeRateResponse { *; }
+
+# --------------------------------------------------------------------------
+# Room Database Rules
+# --------------------------------------------------------------------------
+-keep class * extends androidx.room.RoomDatabase {
+    <init>();
+}
+-keep @androidx.room.Entity class com.example.data.model.** { *; }
+-keep @androidx.room.Dao interface com.example.data.local.** { *; }
+
+# --------------------------------------------------------------------------
+# Kotlin Coroutines
+# --------------------------------------------------------------------------
+-dontwarn kotlinx.coroutines.**
