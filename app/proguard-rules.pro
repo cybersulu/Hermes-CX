@@ -12,6 +12,11 @@
 -keepattributes SourceFile,LineNumberTable
 -renamesourcefileattribute SourceFile
 
+# Keep EdgeToEdge entry points un-obfuscated for Play Console static edge-to-edge detection
+-keep class androidx.activity.EdgeToEdge { *; }
+-keep class androidx.activity.SystemBarStyle { *; }
+-keep class androidx.activity.SystemBarStyle$Companion { *; }
+
 # Preserve generic type signatures and annotations required by Retrofit, Moshi, and Room
 -keepattributes Signature,InnerClasses,EnclosingMethod,RuntimeVisibleAnnotations,RuntimeVisibleParameterAnnotations,AnnotationDefault
 

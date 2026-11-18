@@ -2,6 +2,7 @@ package com.example
 
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -15,17 +16,18 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
+import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.filled.CurrencyExchange
 import androidx.compose.material.icons.filled.Straighten
-import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.outlined.CurrencyExchange
 import androidx.compose.material.icons.outlined.Straighten
-import androidx.compose.material.icons.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -35,7 +37,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime. DisposableEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -68,8 +70,8 @@ enum class Screen(
     ),
     RATES(
         title = "Market",
-        selectedIcon = Icons.Filled.TrendingUp,
-        unselectedIcon = Icons.Outlined.TrendingUp,
+        selectedIcon = Icons.AutoMirrored.Filled.TrendingUp,
+        unselectedIcon = Icons.AutoMirrored.Outlined.TrendingUp,
         testTag = "nav_rates"
     ),
     UNITS(
@@ -114,10 +116,13 @@ class MainActivity : ComponentActivity() {
                         Color.TRANSPARENT
                     ) { isDark },
                     navigationBarStyle = SystemBarStyle.auto(
-                        Color.argb(0xe6, 0xFF, 0xFF, 0xFF),
-                        Color.argb(0x80, 0x1b, 0x1b, 0x1b)
+                        Color.TRANSPARENT,
+                        Color.TRANSPARENT
                     ) { isDark }
                 )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    window.isNavigationBarContrastEnforced = false
+                }
                 onDispose {}
             }
 
@@ -179,7 +184,9 @@ class MainActivity : ComponentActivity() {
                         targetState = currentScreenIndex,
                         transitionSpec = { fadeIn() togetherWith fadeOut() },
                         label = "screen_transition",
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .consumeWindowInsets(innerPadding)
                     ) { index ->
                         when (Screen.entries[index]) {
                             Screen.CALCULATOR -> {
