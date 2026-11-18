@@ -32,7 +32,7 @@
 -dontwarn org.openjsse.**
 
 # Keep Retrofit service interfaces and method signatures
--keepinterface com.example.data.remote.CurrencyApiService { *; }
+-keep interface com.example.data.remote.CurrencyApiService { *; }
 -keepclassmembers,allowshrinking,allowobfuscation interface * {
     @retrofit2.http.* <methods>;
 }
