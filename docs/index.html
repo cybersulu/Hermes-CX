@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hermes CX is a fast, offline-capable currency and unit converter for Android featuring live exchange rates for 110+ currencies, 10 unit categories, fee calculations, and custom themes.">
+    <title>Hermes CX — Currency &amp; Unit Converter</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --surface-subtle: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-primary: #00639b;
+            --accent-secondary: #006d4d;
+            --accent-soft: #e0f2fe;
+            --accent-soft-text: #004a76;
+            --border-color: #e2e8f0;
+            --shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f172a;
+                --surface-color: #162032;
+                --surface-subtle: #1e293b;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --accent-primary: #60a5fa;
+                --accent-secondary: #34d399;
+                --accent-soft: rgba(56, 189, 248, 0.14);
+                --accent-soft-text: #93c5fd;
+                --border-color: #334155;
+                --shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.65;
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrapper {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 28px 20px 48px;
+        }
+
+        /* Top Navigation */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .brand-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #006d4d 0%, #00639b 100%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 36px;
+        }
+
+        .hero-banner {
+            width: 100%;
+            display: block;
+            max-height: 360px;
+            object-fit: cover;
+        }
+
+        .hero-body {
+            padding: 32px 36px;
+        }
+
+        .pill {
+            display: inline-block;
+            background-color: var(--accent-soft);
+            color: var(--accent-soft-text);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+            line-height: 1.2;
+            margin: 0 0 12px;
+            color: var(--text-primary);
+        }
+
+        .hero p {
+            font-size: 1.08rem;
+            color: var(--text-secondary);
+            margin: 0 0 24px;
+            max-width: 70ch;
+        }
+
+        .highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 14px;
+        }
+
+        .highlight-item {
+            background-color: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px 16px;
+        }
+
+        .highlight-value {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--accent-primary);
+            line-height: 1.2;
+        }
+
+        .highlight-label {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Section Headings */
+        .section-header {
+            margin: 40px 0 18px;
+        }
+
+        .section-header h2 {
+            font-size: 1.55rem;
+            margin: 0 0 6px;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+        }
+
+        /* Feature Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background-color: var(--accent-soft);
+            color: var(--accent-primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 14px;
+        }
+
+        .card h3 {
+            font-size: 1.12rem;
+            margin: 0 0 8px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .card ul {
+            margin: 10px 0 0;
+            padding-left: 18px;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+        }
+
+        .card li {
+            margin-bottom: 5px;
+        }
+
+        /* Unit Categories & Themes Pills */
+        .tag-panel {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+
+        .tag-panel h3 {
+            margin: 0 0 12px;
+            font-size: 1.08rem;
+            color: var(--text-primary);
+        }
+
+        .chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background-color: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        .swatch {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /* Privacy Banner */
+        .privacy-callout {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-secondary);
+            border-radius: 16px;
+            padding: 22px 24px;
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .privacy-callout h3 {
+            margin: 0 0 4px;
+            font-size: 1.08rem;
+            color: var(--text-primary);
+        }
+
+        .privacy-callout p {
+            margin: 0;
+            font-size: 0.94rem;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 44px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        footer a {
+            color: var(--accent-primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .hero-body {
+                padding: 24px 20px;
+            }
+            .card, .tag-panel, .privacy-callout {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header class="topbar">
+            <a href="./index.html" class="brand">
+                <span class="brand-badge" aria-hidden="true">CX</span>
+                <span>Hermes CX</span>
+            </a>
+            <nav class="nav-links" aria-label="Primary navigation">
+                <a href="#features">Features</a>
+                <a href="#units">Units</a>
+                <a href="#customization">Themes &amp; Sync</a>
+                <a href="./PRIVACY_POLICY.html">Privacy Policy</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero" aria-labelledby="hero-title">
+                <img
+                    src="./feature_graphic.png"
+                    alt="Hermes CX Currency and Unit Converter feature banner"
+                    class="hero-banner"
+                >
+                <div class="hero-body">
+                    <span class="pill">Android Currency &amp; Unit Converter</span>
+                    <h1 id="hero-title">Fast currency exchange &amp; unit conversions, online or offline.</h1>
+                    <p>
+                        Hermes CX combines live global exchange rates with a responsive calculator keypad,
+                        multi-currency comparison, regional market lookup, and 10 everyday and scientific
+                        unit converters in a clean Material Design 3 interface.
+                    </p>
+
+                    <div class="highlights">
+                        <div class="highlight-item">
+                            <div class="highlight-value">110+</div>
+                            <div class="highlight-label">World currencies supported</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-value">10 Categories</div>
+                            <div class="highlight-label">80+ everyday &amp; scientific units</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-value">100% Offline</div>
+                            <div class="highlight-label">On-device rate cache fallback</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="highlight-value">Zero Ads</div>
+                            <div class="highlight-label">No sign-in, trackers, or PII</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="features">
+                <div class="section-header">
+                    <h2>Key Features</h2>
+                    <p>Built for travelers, remote professionals, shoppers, and engineers who want instant answers without clutter.</p>
+                </div>
+
+                <div class="features-grid">
+                    <article class="card">
+                        <div class="card-icon" aria-hidden="true">&#x1F4B1;</div>
+                        <h3>Two-Way Currency Calculator</h3>
+                        <p>
+                            Convert between 110+ world currencies using a built-in numeric and arithmetic keypad.
+                            Tap either amount card to calculate forward or in reverse, swap currencies in one tap,
+                            and store up to 5 favorite currency pairs for instant switching.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon" aria-hidden="true">&#x1F4CA;</div>
+                        <h3>Multi-Currency Compare</h3>
+                        <p>
+                            Switch to the Compare tab on the converter screen to view your entered amount
+                            converted simultaneously across multiple target currencies—ideal for budgeting trips
+                            or comparing international prices side by side.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon" aria-hidden="true">&#x1F30D;</div>
+                        <h3>Live Market Rates Explorer</h3>
+                        <p>
+                            Browse exchange rates relative to any base currency, search by currency code, name,
+                            country, or symbol, and filter across regions including Popular, Europe, Americas,
+                            Asia, Middle East, Africa, and Oceania. Pin key currencies to keep them at the top.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon" aria-hidden="true">&#x1F4CF;</div>
+                        <h3>Precision &amp; Transfer Fee Estimator</h3>
+                        <p>
+                            Choose 2, 3, or 4 decimal places for display accuracy. Enable the optional Bank /
+                            Transfer Fee slider (0%–10%) to automatically preview fee deductions and your true
+                            net received amount.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon" aria-hidden="true">&#x2708;&#xFE0F;</div>
+                        <h3>Offline Cache &amp; Sync Cadence</h3>
+                        <p>
+                            Exchange rates from ExchangeRate-API are stored locally in an on-device Room database
+                            so conversions continue working offline. Pick how often rates refresh: Manual Only,
+                            15 minutes, 1 hour, 6 hours, or Daily, or pull to refresh anytime.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon" aria-hidden="true">&#x1F3A8;</div>
+                        <h3>Material 3 Themes &amp; Custom Colors</h3>
+                        <p>
+                            Match your style with System, Light, or Dark mode, 7 curated accent palettes, and a
+                            built-in custom color picker that generates harmonious light and dark color schemes.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section id="units">
+                <div class="section-header">
+                    <h2>10-Category Unit Converter</h2>
+                    <p>Two-way conversions with live conversion formulas, quick preset values, and the built-in keypad.</p>
+                </div>
+
+                <div class="tag-panel">
+                    <h3>Supported Measurement Categories</h3>
+                    <div class="chip-list">
+                        <span class="chip">Length (m, km, mi, ft, in, nmi, &mu;m, nm)</span>
+                        <span class="chip">Weight &amp; Mass (kg, g, mg, t, lb, oz, st)</span>
+                        <span class="chip">Temperature (&deg;C, &deg;F, K)</span>
+                        <span class="chip">Volume (L, mL, m&sup3;, gal, qt, pt, cup, fl oz)</span>
+                        <span class="chip">Area (m&sup2;, km&sup2;, ha, ac, ft&sup2;, mi&sup2;)</span>
+                        <span class="chip">Speed (m/s, km/h, mph, kn, ft/s)</span>
+                        <span class="chip">Time (ms, s, min, h, d, wk, mo, yr)</span>
+                        <span class="chip">Digital Storage (bit, B, KB–PB, KiB–TiB)</span>
+                        <span class="chip">Pressure (Pa, kPa, bar, mbar, psi, atm, mmHg)</span>
+                        <span class="chip">Energy &amp; Power (J, kJ, cal, kcal, Wh, kWh, BTU)</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="customization">
+                <div class="section-header">
+                    <h2>Theme Palettes &amp; Privacy</h2>
+                    <p>Personalize your workspace without sacrificing speed or privacy.</p>
+                </div>
+
+                <div class="tag-panel">
+                    <h3>Included Accent Palettes + Custom Color Picker</h3>
+                    <div class="chip-list">
+                        <span class="chip"><span class="swatch" style="background:#00639b"></span>Ocean Blue (Default)</span>
+                        <span class="chip"><span class="swatch" style="background:#006d4d"></span>Emerald Mint</span>
+                        <span class="chip"><span class="swatch" style="background:#6750a4"></span>Royal Violet</span>
+                        <span class="chip"><span class="swatch" style="background:#b32656"></span>Crimson Ruby</span>
+                        <span class="chip"><span class="swatch" style="background:#8a5100"></span>Sunset Amber</span>
+                        <span class="chip"><span class="swatch" style="background:#006a6a"></span>Nordic Teal</span>
+                        <span class="chip"><span class="swatch" style="background:#475569"></span>Slate Charcoal</span>
+                        <span class="chip"><span class="swatch" style="background:conic-gradient(#2563eb,#10b981,#f59e0b,#ec4899,#2563eb)"></span>Custom Hex Picker</span>
+                    </div>
+                </div>
+
+                <div class="privacy-callout">
+                    <div>
+                        <h3>Designed with Privacy First</h3>
+                        <p>
+                            Hermes CX requires no account or sign-in, contains no advertising or analytics SDKs,
+                            and stores your preferences and cached rates solely on your device.
+                        </p>
+                    </div>
+                    <a href="./PRIVACY_POLICY.html" style="font-weight:700;color:var(--accent-primary);text-decoration:none;white-space:nowrap;">
+                        Read Privacy Policy &rarr;
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <span>&copy; 2026 Hermes CX &middot; Currency &amp; Unit Converter</span>
+            <div class="footer-links">
+                <a href="mailto:help@cybersulu.com">help@cybersulu.com</a>
+                <a href="./PRIVACY_POLICY.html">Privacy Policy</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
