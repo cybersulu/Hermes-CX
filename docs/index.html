@@ -154,8 +154,82 @@
         .hero p {
             font-size: 1.08rem;
             color: var(--text-secondary);
-            margin: 0 0 24px;
+            margin: 0 0 22px;
             max-width: 70ch;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 26px;
+        }
+
+        .btn-play {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #0f172a;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 14px;
+            padding: 12px 22px;
+            text-decoration: none;
+            box-shadow: 0 6px 18px rgba(0, 99, 155, 0.22);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+        }
+
+        .btn-play:hover {
+            transform: translateY(-1px);
+            background: #1e293b;
+            box-shadow: 0 10px 24px rgba(0, 99, 155, 0.3);
+        }
+
+        .btn-play:focus-visible {
+            outline: 3px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
+
+        .btn-play-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+            text-align: left;
+        }
+
+        .btn-play-kicker {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        .btn-play-label {
+            font-size: 1.08rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--surface-subtle);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px 20px;
+            font-size: 0.96rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
         }
 
         .highlights {
@@ -373,6 +447,7 @@
                 <a href="#features">Features</a>
                 <a href="#units">Units</a>
                 <a href="#customization">Themes &amp; Sync</a>
+                <a href="https://play.google.com/store/apps/details?id=com.cybersulu.hermescx" target="_blank" rel="noopener noreferrer">Google Play</a>
                 <a href="./PRIVACY_POLICY.html">Privacy Policy</a>
             </nav>
         </header>
@@ -392,6 +467,28 @@
                         multi-currency comparison, regional market lookup, and 10 everyday and scientific
                         unit converters in a clean Material Design 3 interface.
                     </p>
+
+                    <div class="hero-actions">
+                        <a
+                            href="https://play.google.com/store/apps/details?id=com.cybersulu.hermescx"
+                            class="btn-play"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Get Hermes CX on Google Play"
+                        >
+                            <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill="#00D2FF" d="M3.61 1.814L13.793 12 3.61 22.186a1.75 1.75 0 0 1-.46-1.2V3.014c0-.463.175-.892.46-1.2z"/>
+                                <path fill="#00F076" d="M17.204 8.589L13.793 12 3.61 1.814c.385-.397.967-.515 1.545-.185l12.049 6.96z"/>
+                                <path fill="#FF3A44" d="M13.793 12l3.411 3.411-12.049 6.96c-.578.33-1.16.212-1.545-.185L13.793 12z"/>
+                                <path fill="#FFD500" d="M20.695 10.606c1.073.62 1.073 2.168 0 2.788l-3.491 2.017L13.793 12l3.411-3.411 3.491 2.017z"/>
+                            </svg>
+                            <span class="btn-play-text">
+                                <span class="btn-play-kicker">Get it on</span>
+                                <span class="btn-play-label">Google Play</span>
+                            </span>
+                        </a>
+                        <a href="#features" class="btn-secondary">Explore Key Features &darr;</a>
+                    </div>
 
                     <div class="highlights">
                         <div class="highlight-item">
@@ -543,6 +640,7 @@
         <footer>
             <span>&copy; 2026 Hermes CX &middot; Currency &amp; Unit Converter</span>
             <div class="footer-links">
+                <a href="https://play.google.com/store/apps/details?id=com.cybersulu.hermescx" target="_blank" rel="noopener noreferrer">Install on Google Play</a>
                 <a href="mailto:help@cybersulu.com">help@cybersulu.com</a>
                 <a href="./PRIVACY_POLICY.html">Privacy Policy</a>
             </div>
