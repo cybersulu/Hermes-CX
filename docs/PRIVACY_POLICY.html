@@ -3,32 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy for Hermes CX</title>
+    <meta name="description" content="Privacy Policy for Hermes CX — Currency & Unit Converter for Android.">
+    <title>Privacy Policy — Hermes CX</title>
     <style>
         :root {
             --bg-color: #f8fafc;
-            --card-bg: #ffffff;
+            --surface-color: #ffffff;
+            --surface-subtle: #f1f5f9;
             --text-primary: #0f172a;
             --text-secondary: #475569;
-            --accent-color: #2563eb;
+            --accent-primary: #00639b;
+            --accent-secondary: #006d4d;
+            --accent-soft: #e0f2fe;
+            --accent-soft-text: #004a76;
             --border-color: #e2e8f0;
             --code-bg: #f1f5f9;
+            --shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-color: #0f172a;
-                --card-bg: #1e293b;
+                --surface-color: #162032;
+                --surface-subtle: #1e293b;
                 --text-primary: #f8fafc;
                 --text-secondary: #cbd5e1;
-                --accent-color: #60a5fa;
+                --accent-primary: #60a5fa;
+                --accent-secondary: #34d399;
+                --accent-soft: rgba(56, 189, 248, 0.14);
+                --accent-soft-text: #93c5fd;
                 --border-color: #334155;
                 --code-bg: #0f172a;
+                --shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
             }
         }
 
         * {
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -37,53 +52,137 @@
             color: var(--text-primary);
             line-height: 1.65;
             margin: 0;
-            padding: 32px 16px;
+            padding: 0;
         }
 
-        .container {
-            max-width: 760px;
+        .wrapper {
+            max-width: 960px;
             margin: 0 auto;
-            background-color: var(--card-bg);
+            padding: 28px 20px 48px;
+        }
+
+        /* Top Navigation */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .brand-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #006d4d 0%, #00639b 100%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.95rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover,
+        .nav-links a[aria-current="page"] {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        /* Header Card */
+        .policy-header {
+            background-color: var(--surface-color);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 36px 40px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 22px;
+            padding: 32px 34px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
         }
 
-        @media (max-width: 600px) {
-            .container {
-                padding: 24px 20px;
-            }
-        }
-
-        h1 {
-            font-size: 2rem;
-            margin-top: 0;
+        .pill {
+            display: inline-block;
+            background-color: var(--accent-soft);
+            color: var(--accent-soft-text);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 999px;
             margin-bottom: 12px;
+        }
+
+        .policy-header h1 {
+            font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+            line-height: 1.2;
+            margin: 0 0 14px;
             color: var(--text-primary);
         }
 
         .meta {
-            font-size: 0.95rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            font-size: 0.94rem;
             color: var(--text-secondary);
-            padding-bottom: 20px;
-            margin-bottom: 28px;
-            border-bottom: 1px solid var(--border-color);
+            padding-top: 14px;
+            border-top: 1px solid var(--border-color);
         }
 
         .meta p {
-            margin: 4px 0;
+            margin: 0;
+        }
+
+        /* Policy Content Container */
+        .policy-card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px 34px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+        }
+
+        .policy-section + .policy-section {
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
         }
 
         h2 {
-            font-size: 1.35rem;
-            margin-top: 28px;
+            font-size: 1.3rem;
+            margin-top: 0;
             margin-bottom: 10px;
             color: var(--text-primary);
         }
 
         h3 {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             margin-top: 18px;
             margin-bottom: 8px;
             color: var(--text-primary);
@@ -93,13 +192,23 @@
             margin-top: 0;
             margin-bottom: 14px;
             color: var(--text-secondary);
+            font-size: 0.97rem;
+        }
+
+        p:last-child {
+            margin-bottom: 0;
         }
 
         ul {
             margin-top: 0;
-            margin-bottom: 16px;
-            padding-left: 24px;
+            margin-bottom: 14px;
+            padding-left: 22px;
             color: var(--text-secondary);
+            font-size: 0.96rem;
+        }
+
+        ul:last-child {
+            margin-bottom: 0;
         }
 
         li {
@@ -112,94 +221,165 @@
 
         code {
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            font-size: 0.9em;
+            font-size: 0.88em;
             background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
             padding: 2px 6px;
             border-radius: 6px;
             color: var(--text-primary);
         }
 
-        a {
-            color: var(--accent-color);
+        main a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        main a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        footer a {
+            color: var(--accent-primary);
+            font-weight: 600;
             text-decoration: none;
         }
 
-        a:hover {
+        footer a:hover {
             text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .policy-header,
+            .policy-card {
+                padding: 22px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <main class="container">
-        <h1>Privacy Policy for Hermes CX</h1>
-        <div class="meta">
-            <p><strong>Effective Date:</strong> November 9, 2026</p>
-            <p><strong>Application Name:</strong> Hermes CX (Currency &amp; Unit Converter)</p>
-        </div>
+    <div class="wrapper">
+        <header class="topbar">
+            <a href="./index.html" class="brand">
+                <span class="brand-badge" aria-hidden="true">CX</span>
+                <span>Hermes CX</span>
+            </a>
+            <nav class="nav-links" aria-label="Primary navigation">
+                <a href="./index.html">Overview</a>
+                <a href="./USER_MANUAL.html">User Manual</a>
+                <a href="https://play.google.com/store/apps/details?id=com.cybersulu.hermescx" target="_blank" rel="noopener noreferrer">Google Play</a>
+                <a href="./PRIVACY_POLICY.html" aria-current="page">Privacy Policy</a>
+            </nav>
+        </header>
 
-        <section>
-            <h2>1. Overview</h2>
-            <p>Hermes CX ("the App") is a currency and unit converter application for Android. We respect your privacy and are committed to protecting it. The App is designed to operate primarily on your device and does not collect, store, sell, or share any personal information.</p>
-        </section>
+        <main>
+            <section class="policy-header">
+                <span class="pill">Legal &amp; Privacy</span>
+                <h1>Privacy Policy for Hermes CX</h1>
+                <div class="meta">
+                    <p><strong>Effective Date:</strong> November 9, 2026</p>
+                    <p><strong>Application Name:</strong> Hermes CX (Currency &amp; Unit Converter)</p>
+                </div>
+            </section>
 
-        <section>
-            <h2>2. Information We Collect</h2>
+            <div class="policy-card">
+                <section class="policy-section">
+                    <h2>1. Overview</h2>
+                    <p>Hermes CX (&ldquo;the App&rdquo;) is a currency and unit converter application for Android. We respect your privacy and are committed to protecting it. The App is designed to operate primarily on your device and does not collect, store, sell, or share any personal information.</p>
+                </section>
 
-            <h3>a. Personal Information</h3>
-            <p>We <strong>do not</strong> collect, request, or store any personally identifiable information (PII) such as your name, email address, phone number, physical address, account credentials, contacts, or precise location. No user account or sign-in is required to use the App.</p>
+                <section class="policy-section">
+                    <h2>2. Information We Collect</h2>
 
-            <h3>b. Local Device Storage</h3>
-            <p>To provide a seamless and offline-capable experience, the App stores the following non-personal configuration data exclusively on your device using Android local storage (<code>SharedPreferences</code> and an on-device SQLite/Room database):</p>
-            <ul>
-                <li>Cached currency exchange rates and last-sync timestamps for offline calculations</li>
-                <li>Pinned currencies and saved currency pairs</li>
-                <li>Selected unit conversion categories and unit pairs</li>
-                <li>Display and calculation preferences (theme mode, accent color palette, decimal precision, optional bank/transfer fee percentage, and rate refresh frequency)</li>
-            </ul>
-            <p>This data remains strictly on your device and is never transmitted to us or any third party. You can clear all locally stored data at any time through your device's Android System Settings (<strong>Settings &gt; Apps &gt; Hermes CX &gt; Storage &amp; cache &gt; Clear storage</strong>) or by uninstalling the App.</p>
-        </section>
+                    <h3>a. Personal Information</h3>
+                    <p>We <strong>do not</strong> collect, request, or store any personally identifiable information (PII) such as your name, email address, phone number, physical address, account credentials, contacts, or precise location. No user account or sign-in is required to use the App.</p>
 
-        <section>
-            <h2>3. Permissions Used</h2>
-            <p>The App requests only the minimum technical permissions necessary to function:</p>
-            <ul>
-                <li><strong><code>android.permission.INTERNET</code></strong>: Used solely to fetch the latest public foreign exchange rates over secure HTTPS connections.</li>
-                <li><strong><code>android.permission.ACCESS_NETWORK_STATE</code></strong>: Used to check whether your device has an active network connection so the App can seamlessly switch to cached offline rates when you are offline.</li>
-            </ul>
-        </section>
+                    <h3>b. Local Device Storage</h3>
+                    <p>To provide a seamless and offline-capable experience, the App stores the following non-personal configuration data exclusively on your device using Android local storage (<code>SharedPreferences</code> and an on-device SQLite/Room database):</p>
+                    <ul>
+                        <li>Cached currency exchange rates and last-sync timestamps for offline calculations</li>
+                        <li>Pinned currencies and saved currency pairs</li>
+                        <li>Selected unit conversion categories and unit pairs</li>
+                        <li>Display and calculation preferences (theme mode, accent color palette, decimal precision, optional bank/transfer fee percentage, and rate refresh frequency)</li>
+                    </ul>
+                    <p>This data remains strictly on your device and is never transmitted to us or any third party. You can clear all locally stored data at any time through your device's Android System Settings (<strong>Settings &gt; Apps &gt; Hermes CX &gt; Storage &amp; cache &gt; Clear storage</strong>) or by uninstalling the App.</p>
+                </section>
 
-        <section>
-            <h2>4. Third-Party Services</h2>
-            <p>To provide up-to-date currency exchange rates, the App makes read-only HTTPS requests to the public <strong>ExchangeRate-API</strong> (<a href="https://open.er-api.com/" target="_blank" rel="noopener noreferrer"><code>https://open.er-api.com/</code></a>). When the App requests updated currency rates:</p>
-            <ul>
-                <li>Only the requested currency code is sent in the API endpoint URL.</li>
-                <li>Standard network metadata (such as your IP address and standard HTTP request headers) is processed by the API provider solely to deliver the response over the internet.</li>
-                <li>The App does not include any third-party advertising SDKs, analytics trackers, or crash-reporting profilers.</li>
-            </ul>
-        </section>
+                <section class="policy-section">
+                    <h2>3. Permissions Used</h2>
+                    <p>The App requests only the minimum technical permissions necessary to function:</p>
+                    <ul>
+                        <li><strong><code>android.permission.INTERNET</code></strong>: Used solely to fetch the latest public foreign exchange rates over secure HTTPS connections.</li>
+                        <li><strong><code>android.permission.ACCESS_NETWORK_STATE</code></strong>: Used to check whether your device has an active network connection so the App can seamlessly switch to cached offline rates when you are offline.</li>
+                    </ul>
+                </section>
 
-        <section>
-            <h2>5. Children's Privacy</h2>
-            <p>The App does not knowingly collect any personal information from anyone, including children under the age of 13. Because no personal data is collected or transmitted, the App is safe for general audiences.</p>
-        </section>
+                <section class="policy-section">
+                    <h2>4. Third-Party Services</h2>
+                    <p>To provide up-to-date currency exchange rates, the App makes read-only HTTPS requests to the public <strong>ExchangeRate-API</strong> (<a href="https://open.er-api.com/" target="_blank" rel="noopener noreferrer"><code>https://open.er-api.com/</code></a>). When the App requests updated currency rates:</p>
+                    <ul>
+                        <li>Only the requested currency code is sent in the API endpoint URL.</li>
+                        <li>Standard network metadata (such as your IP address and standard HTTP request headers) is processed by the API provider solely to deliver the response over the internet.</li>
+                        <li>The App does not include any third-party advertising SDKs, analytics trackers, or crash-reporting profilers.</li>
+                    </ul>
+                </section>
 
-        <section>
-            <h2>6. Data Security</h2>
-            <p>All network requests for public exchange rate updates are transmitted over encrypted HTTPS connections, and all user preferences are stored locally within Android's sandboxed application storage.</p>
-        </section>
+                <section class="policy-section">
+                    <h2>5. Children's Privacy</h2>
+                    <p>The App does not knowingly collect any personal information from anyone, including children under the age of 13. Because no personal data is collected or transmitted, the App is safe for general audiences.</p>
+                </section>
 
-        <section>
-            <h2>7. Changes to This Privacy Policy</h2>
-            <p>We may update this Privacy Policy from time to time to reflect changes to the App or legal requirements. Any updates will be reflected with a revised "Effective Date" at the top of this policy and within the App.</p>
-        </section>
+                <section class="policy-section">
+                    <h2>6. Data Security</h2>
+                    <p>All network requests for public exchange rate updates are transmitted over encrypted HTTPS connections, and all user preferences are stored locally within Android's sandboxed application storage.</p>
+                </section>
 
-        <section>
-            <h2>8. Contact Us</h2>
-            <p>If you have any questions or concerns about this Privacy Policy or the App's privacy practices, please contact the developer at:</p>
-            <ul>
-                <li><strong>Email:</strong> <a href="mailto:help@cybersulu.com">help@cybersulu.com</a></li>
-            </ul>
-        </section>
-    </main>
+                <section class="policy-section">
+                    <h2>7. Changes to This Privacy Policy</h2>
+                    <p>We may update this Privacy Policy from time to time to reflect changes to the App or legal requirements. Any updates will be reflected with a revised &ldquo;Effective Date&rdquo; at the top of this policy and within the App.</p>
+                </section>
+
+                <section class="policy-section">
+                    <h2>8. Contact Us</h2>
+                    <p>If you have any questions or concerns about this Privacy Policy or the App's privacy practices, please contact the developer at:</p>
+                    <ul>
+                        <li><strong>Email:</strong> <a href="mailto:help@cybersulu.com">help@cybersulu.com</a></li>
+                    </ul>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <span>&copy; 2026 Hermes CX &middot; Currency &amp; Unit Converter</span>
+            <div class="footer-links">
+                <a href="./index.html">Overview</a>
+                <a href="./USER_MANUAL.html">User Manual</a>
+                <a href="https://play.google.com/store/apps/details?id=com.cybersulu.hermescx" target="_blank" rel="noopener noreferrer">Install on Google Play</a>
+                <a href="mailto:help@cybersulu.com">help@cybersulu.com</a>
+                <a href="./PRIVACY_POLICY.html">Privacy Policy</a>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>
