@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Official User Manual for Hermes CX — learn how to use the currency converter, multi-currency compare, live market rates, 10-category unit converter, offline sync, and custom themes.">
+    <title>User Manual — Hermes CX</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --surface-subtle: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-primary: #00639b;
+            --accent-secondary: #006d4d;
+            --accent-soft: #e0f2fe;
+            --accent-soft-text: #004a76;
+            --tip-bg: #ecfdf5;
+            --tip-border: #10b981;
+            --tip-text: #065f46;
+            --border-color: #e2e8f0;
+            --shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f172a;
+                --surface-color: #162032;
+                --surface-subtle: #1e293b;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --accent-primary: #60a5fa;
+                --accent-secondary: #34d399;
+                --accent-soft: rgba(56, 189, 248, 0.14);
+                --accent-soft-text: #93c5fd;
+                --tip-bg: rgba(16, 185, 129, 0.12);
+                --tip-border: #34d399;
+                --tip-text: #a7f3d0;
+                --border-color: #334155;
+                --shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.65;
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 28px 20px 48px;
+        }
+
+        /* Top Navigation */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .brand-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #006d4d 0%, #00639b 100%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.95rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover,
+        .nav-links a[aria-current="page"] {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        /* Header Card & TOC */
+        .manual-header {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 22px;
+            padding: 32px 34px;
+            box-shadow: var(--shadow);
+            margin-bottom: 28px;
+        }
+
+        .pill {
+            display: inline-block;
+            background-color: var(--accent-soft);
+            color: var(--accent-soft-text);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+        }
+
+        .manual-header h1 {
+            font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+            line-height: 1.2;
+            margin: 0 0 10px;
+            color: var(--text-primary);
+        }
+
+        .manual-header p {
+            margin: 0 0 22px;
+            color: var(--text-secondary);
+            font-size: 1.03rem;
+            max-width: 72ch;
+        }
+
+        .toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .toc a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 999px;
+            padding: 7px 14px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .toc a:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        /* Manual Sections */
+        .manual-section {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 28px 32px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+
+        .manual-section h2 {
+            font-size: 1.45rem;
+            margin: 0 0 8px;
+            color: var(--text-primary);
+        }
+
+        .section-intro {
+            margin: 0 0 20px;
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .guide-block {
+            background-color: var(--surface-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 18px 20px;
+        }
+
+        .guide-block h3 {
+            margin: 0 0 8px;
+            font-size: 1.04rem;
+            color: var(--text-primary);
+        }
+
+        .guide-block p {
+            margin: 0;
+            font-size: 0.93rem;
+            color: var(--text-secondary);
+        }
+
+        .guide-block ul,
+        .guide-block ol {
+            margin: 8px 0 0;
+            padding-left: 18px;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+        }
+
+        .guide-block li {
+            margin-bottom: 6px;
+        }
+
+        .tip-box {
+            margin-top: 18px;
+            background-color: var(--tip-bg);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--tip-border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 0.93rem;
+            color: var(--tip-text);
+        }
+
+        .tip-box strong {
+            color: inherit;
+        }
+
+        kbd {
+            display: inline-block;
+            padding: 1px 6px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-primary);
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        /* Bottom Navigation & Footer */
+        .cta-bar {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 22px 26px;
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .cta-bar h3 {
+            margin: 0 0 4px;
+            font-size: 1.06rem;
+        }
+
+        .cta-bar p {
+            margin: 0;
+            font-size: 0.93rem;
+            color: var(--text-secondary);
+        }
+
+        .cta-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--accent-primary);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-size: 0.94rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--surface-subtle);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 0.94rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        footer a {
+            color: var(--accent-primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .manual-header,
+            .manual-section,
+            .cta-bar {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header class="topbar">
+            <a href="./index.html" class="brand">
+                <span class="brand-badge" aria-hidden="true">CX</span>
+                <span>Hermes CX</span>
+            </a>
+            <nav class="nav-links" aria-label="Primary navigation">
+                <a href="./index.html">Overview</a>
+                <a href="./USER_MANUAL.html" aria-current="page">User Manual</a>
+                <a href="https://play.google.com/store/apps/details?id=com.cybersulu.hermescx" target="_blank" rel="noopener noreferrer">Google Play</a>
+                <a href="./PRIVACY_POLICY.html">Privacy Policy</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="manual-header">
+                <span class="pill">User Manual</span>
+                <h1>How to Use Hermes CX</h1>
+                <p>
+                    Hermes CX is organized into four bottom-navigation tabs: <strong>Currency</strong>,
+                    <strong>Market</strong>, <strong>Units</strong>, and <strong>Settings</strong>.
+                    Use this guide to get the most out of every converter, shortcut, and customization option.
+                </p>
+
+                <nav class="toc" aria-label="Manual sections">
+                    <a href="#currency">1. Currency Tab</a>
+                    <a href="#compare">2. Multi-Currency Compare</a>
+                    <a href="#market">3. Market Tab</a>
+                    <a href="#units">4. Units Tab</a>
+                    <a href="#settings">5. Settings &amp; Themes</a>
+                    <a href="#offline">6. Offline Mode &amp; Tips</a>
+                </nav>
+            </section>
+
+            <!-- 1. CURRENCY TAB -->
+            <section id="currency" class="manual-section">
+                <div class="section-badge">Tab 1 &middot; Currency</div>
+                <h2>Currency Converter &amp; Keypad</h2>
+                <p class="section-intro">
+                    Convert between 110+ global currencies in real time. The top card shows the live rate formula
+                    (<code>1 TARGET = rate BASE</code>) and when rates were last updated.
+                </p>
+
+                <div class="guide-grid">
+                    <div class="guide-block">
+                        <h3>Selecting &amp; Swapping Currencies</h3>
+                        <ol>
+                            <li>Tap the <strong>top currency capsule</strong> (Target / Foreign) or <strong>bottom currency capsule</strong> (Base) to open the searchable selector sheet.</li>
+                            <li>Search by currency code (e.g., <code>USD</code>, <code>JPY</code>), country, currency name, or symbol, or filter by region.</li>
+                            <li>Tap the circular <strong>Swap</strong> button between the two rows to invert the Base and Target currencies.</li>
+                        </ol>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>Two-Way Amount Editing</h3>
+                        <ol>
+                            <li>Tap either the <strong>top amount box</strong> or <strong>bottom amount box</strong> to choose which side you are typing into.</li>
+                            <li>The active box highlights with <em>&ldquo;Ready to type&rdquo;</em>&mdash;entering your first digit automatically replaces the existing number so you don&rsquo;t need to backspace first.</li>
+                            <li>The opposite amount updates immediately as you type.</li>
+                        </ol>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>Using the Numeric Keypad</h3>
+                        <ul>
+                            <li>Enter numbers with <kbd>0</kbd>&ndash;<kbd>9</kbd> and decimal point <kbd>.</kbd>.</li>
+                            <li>Tap the <strong>Backspace</strong> key (<kbd>DEL</kbd>) to remove the last digit.</li>
+                            <li><strong>Long-press</strong> the Backspace key to clear the entire input back to <code>0</code>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>Favorite Currency Pairs Strip</h3>
+                        <ul>
+                            <li>Directly above the keypad, up to <strong>5 favorite currency pairs</strong> appear as quick-switch chips.</li>
+                            <li><strong>Tap</strong> any pair chip to load both currencies immediately.</li>
+                            <li><strong>Long-press</strong> any pair chip to open the <em>Edit Favorite Pair</em> dialog and customize its <em>From</em> and <em>To</em> currencies.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Refresh Tip:</strong> Pull downward anywhere on the Currency screen to immediately fetch the latest market exchange rates.
+                </div>
+            </section>
+
+            <!-- 2. MULTI-CURRENCY COMPARE -->
+            <section id="compare" class="manual-section">
+                <div class="section-badge">Tab 1 Sub-View &middot; Compare</div>
+                <h2>Multi-Currency Compare</h2>
+                <p class="section-intro">
+                    View your current entered amount converted simultaneously into all of your pinned currencies.
+                </p>
+
+                <div class="guide-grid">
+                    <div class="guide-block">
+                        <h3>How to Compare Multiple Currencies</h3>
+                        <ol>
+                            <li>On the <strong>Currency</strong> tab, tap the <strong>Compare</strong> sub-tab next to <em>Keypad</em>.</li>
+                            <li>Every currency you have pinned (excluding the two currencies currently active in the hero card) appears with its converted total and unit exchange rate.</li>
+                            <li>Tap any currency row in the Compare list to set it as your active counter-currency and return to the keypad.</li>
+                        </ol>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>Populating Your Compare List</h3>
+                        <p>
+                            The Compare view displays your <strong>pinned currencies</strong> sorted alphabetically by country.
+                            If the list is empty, open the <strong>Market</strong> tab and tap the pin icon on any currencies you want to track.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. MARKET TAB -->
+            <section id="market" class="manual-section">
+                <div class="section-badge">Tab 2 &middot; Market</div>
+                <h2>Market Rates Explorer</h2>
+                <p class="section-intro">
+                    Scan live exchange rates across regions, pin your most-used currencies, and jump straight into conversions.
+                </p>
+
+                <div class="guide-grid">
+                    <div class="guide-block">
+                        <h3>Changing the Base Reference</h3>
+                        <p>
+                            Tap the <strong>Base: CODE</strong> badge in the top-right corner of the Market screen to choose any base currency.
+                            All rows in the list recalculate relative to <code>1</code> unit of that base currency.
+                        </p>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>Searching &amp; Region Filtering</h3>
+                        <ul>
+                            <li>Use the search bar to filter by code, currency name, country, or symbol.</li>
+                            <li>Tap region chips (<em>All</em>, <em>Popular</em>, <em>Europe</em>, <em>Americas</em>, <em>Asia</em>, <em>Middle East</em>, <em>Africa</em>, <em>Oceania</em>) to narrow the list.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>Pinning &amp; Quick Conversion</h3>
+                        <ul>
+                            <li>Tap the <strong>Pin</strong> icon on the right side of any row to pin or unpin that currency. Pinned currencies stay sorted at the top of Market, currency picker sheets, and the Compare tab.</li>
+                            <li>Tap anywhere else on a currency card to open it as your Target currency in the <strong>Currency</strong> tab.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. UNITS TAB -->
+            <section id="units" class="manual-section">
+                <div class="section-badge">Tab 3 &middot; Units</div>
+                <h2>10-Category Unit Converter</h2>
+                <p class="section-intro">
+                    Convert between 80+ everyday and scientific units across 10 measurement categories, complete with live formulas and clipboard copy.
+                </p>
+
+                <div class="guide-grid">
+                    <div class="guide-block">
+                        <h3>Switching Categories &amp; Units</h3>
+                        <ul>
+                            <li>Scroll the horizontal <strong>Category Strip</strong> above the keypad to switch between <em>Length</em>, <em>Weight &amp; Mass</em>, <em>Temperature</em>, <em>Volume</em>, <em>Area</em>, <em>Speed</em>, <em>Time</em>, <em>Digital Storage</em>, <em>Pressure</em>, and <em>Energy &amp; Power</em>.</li>
+                            <li>Tap either unit capsule (top <em>From</em> or bottom <em>To</em>) to pick a different unit in the current category.</li>
+                            <li>Tap either amount box for two-way editing, or tap the center <strong>Swap</strong> button to invert the units.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>Formula Banner &amp; Copy</h3>
+                        <p>
+                            The banner at the top of the card displays the exact conversion formula (for example, <code>1 m = 3.28084 ft</code> or <code>&deg;F = (&deg;C &times; 9/5) + 32</code>).
+                            Tap <strong>Copy</strong> to copy the formatted conversion equation to your clipboard.
+                        </p>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>All-Units Compare View</h3>
+                        <p>
+                            Switch to the <strong>Compare</strong> sub-tab on the Units screen to see your current value converted into <strong>every unit</strong> in the active category at once.
+                            Tap any row to make it your Target unit and jump back to the keypad.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. SETTINGS TAB -->
+            <section id="settings" class="manual-section">
+                <div class="section-badge">Tab 4 &middot; Settings</div>
+                <h2>Preferences, Fees &amp; Themes</h2>
+                <p class="section-intro">
+                    Customize how often rates sync, how calculations are formatted, and how Hermes CX looks.
+                </p>
+
+                <div class="guide-grid">
+                    <div class="guide-block">
+                        <h3>Refresh Frequency &amp; Sync Status</h3>
+                        <ul>
+                            <li>Select a sync interval: <strong>Manual Only (Save data)</strong>, <strong>Every 15 minutes</strong>, <strong>Every 1 hour (Recommended)</strong>, <strong>Every 6 hours</strong>, or <strong>Daily (Every 24 hours)</strong>.</li>
+                            <li>View how many currencies are cached offline, the last-synced timestamp, and your current online/offline status.</li>
+                            <li>Tap <strong>Sync Market Rates Now</strong> at any time for an immediate update.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>Decimal Precision &amp; Bank / FX Fee</h3>
+                        <ul>
+                            <li>Choose <strong>2</strong>, <strong>3</strong>, or <strong>4 decimal places</strong> for currency result formatting.</li>
+                            <li>Toggle <strong>Include Bank / Transfer Fee</strong> and drag the slider from <strong>0.0% to 10.0%</strong> (in 0.5% steps) to preview the fee deducted and net received amount right inside the Currency card.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>Theme Mode &amp; Accent Colors</h3>
+                        <ul>
+                            <li>Set Display Mode to <strong>System</strong>, <strong>Light</strong>, or <strong>Dark</strong>.</li>
+                            <li>Pick from 7 preset palettes (<em>Ocean Blue</em>, <em>Emerald Mint</em>, <em>Royal Violet</em>, <em>Crimson Ruby</em>, <em>Sunset Amber</em>, <em>Nordic Teal</em>, <em>Slate Charcoal</em>) or select <strong>Custom</strong> and tap <em>Customize Palette</em> to choose any hex color.</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>In-App Privacy Policy</h3>
+                        <p>
+                            Scroll to the bottom of Settings and tap the <strong>Privacy Policy</strong> card to review permissions, local storage details, and third-party API usage inside the app.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. OFFLINE & TIPS -->
+            <section id="offline" class="manual-section">
+                <div class="section-badge">Reliability</div>
+                <h2>Offline Mode &amp; Data Privacy</h2>
+                <p class="section-intro">
+                    Designed to keep working in airplanes, subways, and low-connectivity travel zones without accounts or tracking.
+                </p>
+
+                <div class="guide-grid">
+                    <div class="guide-block">
+                        <h3>Automatic Offline Fallback</h3>
+                        <p>
+                            Every rate sync saves exchange rates locally in an on-device Room database. When no network connection is available,
+                            Hermes CX switches automatically to your cached rates and displays an <em>Offline</em> badge alongside the last-updated time.
+                            Unit conversions require no internet connection at all.
+                        </p>
+                    </div>
+
+                    <div class="guide-block">
+                        <h3>Quick Navigation &amp; Back Behavior</h3>
+                        <p>
+                            All preferences&mdash;saved pairs, pinned currencies, fee settings, precision, and custom theme colors&mdash;are stored locally on your device.
+                            Pressing the Android Back button while on Market, Units, or Settings returns you directly to the Currency converter tab.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="cta-bar">
+                <div>
+                    <h3>Ready to start converting?</h3>
+                    <p>Download Hermes CX on Google Play or review our privacy practices.</p>
+                </div>
+                <div class="cta-actions">
+                    <a
+                        href="https://play.google.com/store/apps/details?id=com.cybersulu.hermescx"
+                        class="btn-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Get it on Google Play
+                    </a>
+                    <a href="./index.html" class="btn-outline">Back to Overview</a>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <span>&copy; 2026 Hermes CX &middot; Currency &amp; Unit Converter</span>
+            <div class="footer-links">
+                <a href="./index.html">Overview</a>
+                <a href="https://play.google.com/store/apps/details?id=com.cybersulu.hermescx" target="_blank" rel="noopener noreferrer">Google Play</a>
+                <a href="mailto:help@cybersulu.com">help@cybersulu.com</a>
+                <a href="./PRIVACY_POLICY.html">Privacy Policy</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
